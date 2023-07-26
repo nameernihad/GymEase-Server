@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   phone: { type: Number, require: true },
   isTrainer: { type: String, default: false },
+  isAdmin: { type: String, default: false },
 });
 
 // create userModel from the schema

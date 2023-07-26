@@ -4,18 +4,16 @@ const bodyParser = require("body-parser");
 
 const userController = require("./src/interface/controller/userController");
 const router = require("./src/interface/routes/userRoutes");
+const adminRoutes = require("./src/interface/routes/adminRoutes");
 
-// Load environment variables from .env file (optional)
 require("dotenv").config();
 
-// Create Express app
 const app = express();
 
-// Middleware
 app.use(bodyParser.json());
-app.use("/", router); // Mount the router at the "/api" base path
+app.use("/", router);
+app.use("/admin", adminRoutes);
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -29,12 +27,10 @@ mongoose.connection.on("error", (err) => {
   console.error("Error connecting to MongoDB:", err);
 });
 
-// Define a sample route
 app.get("/", (req, res) => {
   res.send("Hello from the server!");
 });
 
-// Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
