@@ -1,5 +1,9 @@
 const { loginUser } = require("../../app/usecases/user/loginUser");
 const { sigupUser } = require("../../app/usecases/user/signupUser");
+const {
+  validateSignupData,
+  validateLoginData,
+} = require("../../domain/entities/userValidation");
 const { UserModel } = require("../../infra/database/userModel");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
 const { generateToken } = require("../middleware/authToken");
@@ -10,6 +14,10 @@ const userRepository = UserRepoImpl(db);
 
 const UserRegister = async (req, res) => {
   const { name, email, password, phone } = req.body;
+  const validationErrors = validateSignupData(req.body);
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ errors: validationErrors });
+  }
   try {
     const user = await sigupUser(userRepository)(name, email, password, phone);
     if (!user) {
@@ -24,7 +32,10 @@ const UserRegister = async (req, res) => {
 const UserLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const validationErrors = validateSignupData(req.body);
+    const validationErrors = validateLoginData(req.body);
+    if (validationErrors.length > 0) {
+      return res.status(400).json({ errors: validationErrors });
+    }
     const user = await loginUser(userRepository)(email, password);
 
     if (user) {

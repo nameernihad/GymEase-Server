@@ -65,7 +65,24 @@ const validateSignupData = (data) => {
 
   return errors;
 };
+const validateLoginData = (data) => {
+  const { email, password } = data;
+  const errors = [];
+
+  const emailError = validateEmail(email);
+  if (emailError) {
+    errors.push(emailError);
+  }
+
+  const passwordError = validatePassword(password);
+  if (passwordError) {
+    errors.push(passwordError);
+  }
+
+  return errors;
+};
 
 module.exports = {
   validateSignupData,
+  validateLoginData,
 };
