@@ -5,14 +5,17 @@ const bodyParser = require("body-parser");
 const userController = require("./src/interface/controller/userController");
 const router = require("./src/interface/routes/userRoutes");
 const adminRoutes = require("./src/interface/routes/adminRoutes");
+const trainerRoutes = require("./src/interface/routes/trainerRoutes");
 
 require("dotenv").config();
 
 const app = express();
 
 app.use(bodyParser.json());
+
 app.use("/", router);
 app.use("/admin", adminRoutes);
+app.use("/trainer", trainerRoutes);
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
