@@ -5,8 +5,8 @@ const { User } = require("../../domain/model/user");
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  password: { type: String, required: true },
-  phone: { type: Number, require: true },
+  password: { type: String },
+  phone: { type: Number },
   isTrainer: { type: String, default: false },
   isAdmin: { type: String, default: false },
 });

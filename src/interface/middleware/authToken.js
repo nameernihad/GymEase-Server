@@ -2,17 +2,6 @@ const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
-// Function to generate a new JWT token
-const generateToken = (payload) => {
-  const secretKey = process.env.SECRET_KEY;
-  const options = {
-    expiresIn: "1d",
-  };
-
-  return jwt.sign(payload, secretKey, options);
-};
-
-//  verify the JWT token
 const verifyToken = (req, res, next) => {
   const secretKey = process.env.SECRET_KEY;
 
@@ -30,6 +19,15 @@ const verifyToken = (req, res, next) => {
     req.user = decoded;
     next();
   });
+};
+
+const generateToken = (payload) => {
+  const secretKey = process.env.SECRET_KEY;
+  const options = {
+    expiresIn: "1d",
+  };
+
+  return jwt.sign(payload, secretKey, options);
 };
 
 module.exports = {

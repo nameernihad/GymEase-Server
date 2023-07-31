@@ -2,12 +2,18 @@ const { UserModel } = require("../database/userModel");
 
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
-    const createdUser = await UserModel.create(user);
-    return createdUser.toObject();
+    console.log(user, "oihgufyh");
+    try {
+      const createdUser = await UserModel.create(user);
+      console.log(createdUser);
+      return createdUser.toObject();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const findByemail = async (email) => {
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email, isAdmin: false });
     return user ? user.toObject() : null;
   };
 

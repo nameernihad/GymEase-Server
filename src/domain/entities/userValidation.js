@@ -1,4 +1,5 @@
-// validation.js
+const { UserRepoImpl } = require("../../infra/repositories/userRepo");
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^[0-9]{10}$/;
 
@@ -6,26 +7,20 @@ const isEmailValid = (email) => emailRegex.test(email);
 const isPhoneValid = (phone) => phoneRegex.test(phone);
 
 const validatename = (name) => {
-  if (!name) {
-    return "name is required.";
-  }
   if (name.length < 3) {
-    return "name must be at least 3 characters long.";
+    return "Name must be at least 3 characters long.";
   }
   return null;
 };
 
 const validateEmail = (email) => {
-  if (!email || !isEmailValid(email)) {
+  if (!isEmailValid(email)) {
     return "Invalid email format.";
   }
   return null;
 };
 
 const validatePassword = (password) => {
-  if (!password) {
-    return "Password is required.";
-  }
   if (password.length < 6) {
     return "Password must be at least 6 characters long.";
   }
@@ -33,13 +28,13 @@ const validatePassword = (password) => {
 };
 
 const validatePhone = (phone) => {
-  if (!phone || !isPhoneValid(phone)) {
+  if (!isPhoneValid(phone)) {
     return "Invalid phone number format.";
   }
   return null;
 };
 
-const validateSignupData = (data) => {
+const validateSignupData = async (data) => {
   const { name, email, password, phone } = data;
   const errors = [];
 
