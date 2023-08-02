@@ -15,9 +15,10 @@ const UserRepoImpl = (userModel) => {
     return user ? user.toObject() : null;
   };
 
-  const findById = async (id) => {
-    const userById = await userModel.findOne({ id: _id });
-    return userById ? userById.toObject() : null;
+  const getUserById = async (userid) => {
+    const userById = await userModel.findOne({ _id: userid });
+    console.log(userById);
+    return userById;
   };
 
   const findOne = async (user) => {
@@ -55,7 +56,7 @@ const UserRepoImpl = (userModel) => {
   return {
     Create,
     findByemail,
-    findById,
+    getUserById,
     find,
     findOne,
     BlockingUser,

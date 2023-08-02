@@ -12,7 +12,17 @@ const BockUser = (userRepo) => async (userId, status) => {
     return updatedUser;
   }
 };
+
+const showUserById = (userRepo) => async (userId) => {
+  console.log(userId, "usecase id");
+  const singleUser = await userRepo.getUserById(userId);
+  console.log(singleUser, "usecase user");
+  if (singleUser) {
+    return singleUser;
+  }
+};
 module.exports = {
   UserList,
   BockUser,
+  showUserById,
 };

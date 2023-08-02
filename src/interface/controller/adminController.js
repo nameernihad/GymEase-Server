@@ -4,7 +4,11 @@ const { adminRepoimpl } = require("../../infra/repositories/adminRepo");
 const { adminLogin } = require("../../app/usecases/admin/adminLogin");
 const { generateToken } = require("../middleware/authToken");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
-const { UserList, BockUser } = require("../../app/usecases/admin/userList");
+const {
+  UserList,
+  BockUser,
+  showUserById,
+} = require("../../app/usecases/admin/userList");
 const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
 const { TrainerList } = require("../../app/usecases/admin/trainerList");
 
@@ -76,9 +80,24 @@ const TrainerlistController = async (req, res) => {
   }
 };
 
+const UserSingleView = async (req, res) => {
+  try {
+    const id = req.params.userId;
+    console.log(id, "cont");
+    const userview = await showUserById(userRepo)(id);
+    if (userview) {
+      res.status(200).json({ userview });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   Login,
   UserListController,
   UserBlocking,
   TrainerlistController,
+  UserSingleView,
 };
