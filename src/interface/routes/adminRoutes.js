@@ -1,8 +1,16 @@
 const express = require("express");
-const { Login } = require("../controller/adminController");
+const {
+  Login,
+  UserListController,
+  UserBlocking,
+  TrainerlistController,
+} = require("../controller/adminController");
 
 const adminRoutes = express.Router();
 
 adminRoutes.post("/", Login);
+adminRoutes.get("/getAllUsers", UserListController);
+adminRoutes.get("/getAllTrainer", TrainerlistController);
+adminRoutes.put("/blockuser/:userId", UserBlocking);
 
 module.exports = adminRoutes;

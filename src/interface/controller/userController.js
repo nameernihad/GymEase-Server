@@ -69,6 +69,7 @@ const userLoginWithGoogle = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 module.exports = {
   UserRegister,
   UserLogin,

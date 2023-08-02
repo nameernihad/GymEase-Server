@@ -3,10 +3,16 @@ const { UserModel } = require("../../infra/database/userModel");
 const { adminRepoimpl } = require("../../infra/repositories/adminRepo");
 const { adminLogin } = require("../../app/usecases/admin/adminLogin");
 const { generateToken } = require("../middleware/authToken");
+const { UserRepoImpl } = require("../../infra/repositories/userRepo");
+const { UserList, BockUser } = require("../../app/usecases/admin/userList");
+const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
+const { TrainerList } = require("../../app/usecases/admin/trainerList");
 
 const db = UserModel;
 
 const adminRepo = adminRepoimpl(db);
+const userRepo = UserRepoImpl(db);
+const trainerRepo = trainerRepoimpl(db);
 
 const Login = async (req, res) => {
   try {
@@ -29,6 +35,50 @@ const Login = async (req, res) => {
   }
 };
 
+const UserListController = async (req, res) => {
+  try {
+    const userList = await UserList(userRepo)();
+    if (userList) {
+      res.status(200).json({ userList });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const UserBlocking = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { status } = req.body;
+    const userUpdate = await BockUser(userRepo)(userId, status);
+
+    if (userUpdate) {
+      if (status === "Block") {
+        res.status(201).json({ message: "User Blocked" });
+      } else if (status === "Unblock") {
+        res.status(201).json({ message: "User UnBlocked" });
+      }
+    }
+  } catch (error) {
+    console.log(error.message, "catch");
+    res.status(500).json({ message: "internel server error" });
+  }
+};
+
+const TrainerlistController = async (req, res) => {
+  try {
+    const Trainerdetails = await TrainerList(trainerRepo)();
+    if (Trainerdetails) {
+      res.status(200).json({ Trainerdetails });
+    }
+  } catch (error) {
+    console.log(error.message, "trainer catch");
+  }
+};
+
 module.exports = {
   Login,
+  UserListController,
+  UserBlocking,
+  TrainerlistController,
 };

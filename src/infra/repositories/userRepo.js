@@ -2,10 +2,8 @@ const { UserModel } = require("../database/userModel");
 
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
-    console.log(user, "oihgufyh");
     try {
       const createdUser = await UserModel.create(user);
-      console.log(createdUser);
       return createdUser.toObject();
     } catch (error) {
       console.log(error.message);
@@ -27,19 +25,41 @@ const UserRepoImpl = (userModel) => {
     return currentUser ? currentUser.toObject() : null;
   };
 
-  const find = async (id) => {
-    const allUser = await userModel.find();
-    return allUser.map((user) => {
-      user.toObject();
+  const find = async () => {
+    const allUser = await userModel.find({
+      $and: [{ isAdmin: false }, { isTrainer: false }],
     });
+    return allUser;
   };
 
+  const BlockingUser = async (id) => {
+    const updateResult = await userModel.updateOne(
+      { _id: id },
+      { $set: { isBlock: true } }
+    );
+    if (updateResult) {
+      console.log(updateResult);
+      return updateResult;
+    }
+  };
+  const UnBlockingUser = async (id) => {
+    const updateResult = await userModel.updateOne(
+      { _id: id },
+      { $set: { isBlock: false } }
+    );
+    if (updateResult) {
+      console.log(updateResult);
+      return updateResult;
+    }
+  };
   return {
     Create,
     findByemail,
     findById,
     find,
     findOne,
+    BlockingUser,
+    UnBlockingUser,
   };
 };
 
