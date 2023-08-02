@@ -12,5 +12,6 @@ adminRoutes.post("/", Login);
 adminRoutes.get("/getAllUsers", UserListController);
 adminRoutes.get("/getAllTrainer", TrainerlistController);
 adminRoutes.put("/blockuser/:userId", UserBlocking);
+adminRoutes.put("/blocktrainer/:userId", UserBlocking);
 
 module.exports = adminRoutes;
