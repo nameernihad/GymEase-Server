@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   isTrainer: { type: Boolean, default: false },
   isAdmin: { type: Boolean, default: false },
   isBlock: { type: Boolean, default: false },
+  isPremium: { type: Boolean, default: false },
+  gender: { type: String },
 });
 
 // create userModel from the schema

@@ -34,25 +34,29 @@ const UserRepoImpl = (userModel) => {
   };
 
   const BlockingUser = async (id) => {
-    const updateResult = await userModel.updateOne(
-      { _id: id },
-      { $set: { isBlock: true } }
-    );
-    if (updateResult) {
-      console.log(updateResult);
-      return updateResult;
+    try {
+      const user = await userModel.findOne({ _id: id });
+      if (user) {
+        const updatedIsBlock = !user.isBlock;
+
+        const updateResult = await userModel.updateOne(
+          { _id: id },
+          { $set: { isBlock: updatedIsBlock } }
+        );
+
+        if (updateResult) {
+          return !user.isBlock;
+        }
+      } else {
+        console.log("User not found!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error while updating user:", error);
+      return null;
     }
   };
-  const UnBlockingUser = async (id) => {
-    const updateResult = await userModel.updateOne(
-      { _id: id },
-      { $set: { isBlock: false } }
-    );
-    if (updateResult) {
-      console.log(updateResult);
-      return updateResult;
-    }
-  };
+
   return {
     Create,
     findByemail,
@@ -60,7 +64,6 @@ const UserRepoImpl = (userModel) => {
     find,
     findOne,
     BlockingUser,
-    UnBlockingUser,
   };
 };
 

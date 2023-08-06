@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => {
 const generateToken = (payload) => {
   const secretKey = process.env.SECRET_KEY;
   const options = {
-    expiresIn: "1d",
+    expiresIn: "1h",
   };
 
   return jwt.sign(payload, secretKey, options);
