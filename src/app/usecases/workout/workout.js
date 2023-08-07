@@ -1,0 +1,40 @@
+const insertWorkout =
+  (workoutRepo) =>
+  async (name, description, category, Level, gif, count, timer) => {
+    const newWorkout = {
+      name,
+      description,
+      category,
+      Level,
+      gif,
+      count,
+      timer,
+    };
+    const createdUser = await workoutRepo.Create(newWorkout);
+    return createdUser;
+  };
+
+const WorkoutList = (workoutRepo) => async () => {
+  workoutdetails = await workoutRepo.listWorkout();
+  return workoutdetails;
+};
+
+const updateWorkouts = (workoutRepo) => async (workoutId, updateData) => {
+  try {
+    const updatedWorkout = await workoutRepo.UpdateWorkout(
+      workoutId,
+      updateData
+    );
+
+    return updatedWorkout;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Failed to update workout.");
+  }
+};
+
+module.exports = {
+  WorkoutList,
+  updateWorkouts,
+  insertWorkout,
+};

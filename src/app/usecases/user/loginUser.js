@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const { generateToken } = require("../../../interface/middleware/authToken");
 
 const loginUser = (userRepository) => async (email, password) => {
-  console.log(email, password);
   const user = await userRepository.findByemail(email);
   if (user) {
     console.log(user);

@@ -12,7 +12,7 @@ const {
 const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
 const { TrainerList } = require("../../app/usecases/admin/trainerList");
 const { workoutRepoImp } = require("../../infra/repositories/workoutRepo");
-const { insertWorkout } = require("../../app/usecases/admin/addWorkout");
+
 const { workoutModel } = require("../../infra/database/workouts");
 
 const db = UserModel;
@@ -21,7 +21,7 @@ const workoutdb = workoutModel;
 const adminRepo = adminRepoimpl(db);
 const userRepo = UserRepoImpl(db);
 const trainerRepo = trainerRepoimpl(db);
-const workoutRepo = workoutRepoImp(workoutdb);
+
 
 const Login = async (req, res) => {
   try {
@@ -95,35 +95,10 @@ const UserSingleView = async (req, res) => {
   }
 };
 
-const AddWorkout = async (req, res) => {
-  try {
-    const { name, description, category, Level, gif, count, timer } = req.body;
-    const createdWorkout = await insertWorkout(workoutRepo)(
-      name,
-      description,
-      category,
-      Level,
-      gif,
-      count,
-      timer
-    );
-    if (createdWorkout) {
-      res
-        .status(201)
-        .json({ message: "workout successfully added", createdWorkout });
-    } else {
-      res.status(400).json({ message: "something went wrong" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 module.exports = {
   Login,
   UserListController,
   UserBlocking,
   TrainerlistController,
   UserSingleView,
-  AddWorkout,
 };

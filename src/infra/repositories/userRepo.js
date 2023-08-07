@@ -11,7 +11,11 @@ const UserRepoImpl = (userModel) => {
   };
 
   const findByemail = async (email) => {
-    const user = await userModel.findOne({ email, isAdmin: false });
+    const user = await UserModel.findOne({
+      email,
+      isAdmin: false,
+      isTrainer: false,
+    });
     return user ? user.toObject() : null;
   };
 

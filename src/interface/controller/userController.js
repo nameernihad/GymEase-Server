@@ -61,7 +61,7 @@ const UserLogin = async (req, res) => {
     console.log(error.message);
     res
       .status(error.statusCode || 500)
-      .json({ message: error.message || "Somthing went wrong" });
+      .json({ message: error.message || "Something went wrong" });
   }
 };
 const userLoginWithGoogle = async (req, res) => {
