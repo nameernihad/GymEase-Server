@@ -1,6 +1,7 @@
 const {
   updateWorkouts,
   WorkoutList,
+  deleteWorkout,
 } = require("../../app/usecases/workout/workout");
 const { insertWorkout } = require("../../app/usecases/workout/workout");
 const { workoutModel } = require("../../infra/database/workouts");
@@ -74,8 +75,27 @@ const UpdateWorkout = async (req, res) => {
   }
 };
 
+const WorkoutDelete = async (req, res) => {
+  try {
+    const { workoutId } = req.params;
+    console.log(workoutId);
+    const deletedWorkout = await deleteWorkout(workoutId);
+    if (deletedWorkout) {
+      res
+        .status(201)
+        .json({ message: "Workout Successfully deleted", deleteWorkout });
+    } else {
+      res.status(500).json({ message: "something went wrong" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   AddWorkout,
   WorkoutlistController,
   UpdateWorkout,
+  WorkoutDelete,
 };

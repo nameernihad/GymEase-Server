@@ -11,6 +11,7 @@ const {
   AddWorkout,
   WorkoutlistController,
   UpdateWorkout,
+  WorkoutDelete,
 } = require("../controller/workoutController");
 
 const adminRoutes = express.Router();
@@ -25,6 +26,7 @@ adminRoutes.get("/getAllWorkouts", WorkoutlistController);
 adminRoutes.put("/blockuser/:userId", UserBlocking);
 adminRoutes.put("/blocktrainer/:userId", UserBlocking);
 adminRoutes.put("/updateWorkout/:workoutId", UpdateWorkout);
+adminRoutes.delete("/deleteWorkout/:workoutId", WorkoutDelete);
 
 adminRoutes.get("/showUser/:userId", UserSingleView);
 

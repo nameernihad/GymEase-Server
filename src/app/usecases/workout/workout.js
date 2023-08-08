@@ -33,8 +33,19 @@ const updateWorkouts = (workoutRepo) => async (workoutId, updateData) => {
   }
 };
 
+const deleteWorkout = (workoutRepo) => async (workoutId) => {
+  try {
+    const deletedWorkout = await workoutRepo.deleteWorkout(workoutId);
+    return deletedWorkout;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Failed to update workout.");
+  }
+};
+
 module.exports = {
   WorkoutList,
   updateWorkouts,
   insertWorkout,
+  deleteWorkout,
 };

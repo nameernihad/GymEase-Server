@@ -30,10 +30,21 @@ const workoutRepoImp = (workoutModel) => {
     }
   };
 
+  const deleteWorkout = async (workoutId) => {
+    try {
+      const WorkoutDelete = await workoutModel.findByIdAndDelete(workoutId);
+      return WorkoutDelete;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error("Failed to delete workout.");
+    }
+  };
+
   return {
     Create,
     listWorkout,
     UpdateWorkout,
+    deleteWorkout,
   };
 };
 

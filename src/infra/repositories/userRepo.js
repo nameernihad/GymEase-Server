@@ -1,4 +1,5 @@
 const { UserModel } = require("../database/userModel");
+const bcrypt = require("bcrypt");
 
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
@@ -20,18 +21,18 @@ const UserRepoImpl = (userModel) => {
   };
 
   const getUserById = async (userid) => {
-    const userById = await userModel.findOne({ _id: userid });
+    const userById = await UserModel.findOne({ _id: userid });
     console.log(userById);
     return userById;
   };
 
   const findOne = async (user) => {
-    const currentUser = await userModel.findOne({ user });
+    const currentUser = await UserModel.findOne({ user });
     return currentUser ? currentUser.toObject() : null;
   };
 
   const find = async () => {
-    const allUser = await userModel.find({
+    const allUser = await UserModel.find({
       $and: [{ isAdmin: false }, { isTrainer: false }],
     });
     return allUser;
@@ -39,11 +40,11 @@ const UserRepoImpl = (userModel) => {
 
   const BlockingUser = async (id) => {
     try {
-      const user = await userModel.findOne({ _id: id });
+      const user = await UserModel.findOne({ _id: id });
       if (user) {
         const updatedIsBlock = !user.isBlock;
 
-        const updateResult = await userModel.updateOne(
+        const updateResult = await UserModel.updateOne(
           { _id: id },
           { $set: { isBlock: updatedIsBlock } }
         );
@@ -61,6 +62,23 @@ const UserRepoImpl = (userModel) => {
     }
   };
 
+  const PasswordReset = async (userId, password) => {
+    try {
+      console.log(userId, password);
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const updatedData = await UserModel.findByIdAndUpdate(
+        { _id: userId },
+        {
+          $set: { password: hashedPassword },
+        }
+      );
+
+      return updatedData;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return {
     Create,
     findByemail,
@@ -68,6 +86,7 @@ const UserRepoImpl = (userModel) => {
     find,
     findOne,
     BlockingUser,
+    PasswordReset,
   };
 };
 

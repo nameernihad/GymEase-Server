@@ -22,14 +22,12 @@ const adminRepo = adminRepoimpl(db);
 const userRepo = UserRepoImpl(db);
 const trainerRepo = trainerRepoimpl(db);
 
-
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
     const validationErrors = validateLoginData(req.body);
-    if (validationErrors.length > 0) {
-      return res.status(400).json({ errors: validationErrors });
-    }
+
     const admin = await adminLogin(adminRepo)(email, password);
 
     if (admin) {
