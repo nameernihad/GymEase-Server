@@ -12,12 +12,12 @@ const workoutRepo = workoutRepoImp(workoutdb);
 
 const AddWorkout = async (req, res) => {
   try {
-    const { name, description, category, Level, gif, count, timer } = req.body;
+    const { name, description, category, level, gif, count, timer } = req.body;
     const createdWorkout = await insertWorkout(workoutRepo)(
       name,
       description,
       category,
-      Level,
+      level,
       gif,
       count,
       timer
@@ -78,8 +78,7 @@ const UpdateWorkout = async (req, res) => {
 const WorkoutDelete = async (req, res) => {
   try {
     const { workoutId } = req.params;
-    console.log(workoutId);
-    const deletedWorkout = await deleteWorkout(workoutId);
+    const deletedWorkout = await deleteWorkout(workoutRepo)(workoutId);
     if (deletedWorkout) {
       res
         .status(201)
@@ -88,7 +87,7 @@ const WorkoutDelete = async (req, res) => {
       res.status(500).json({ message: "something went wrong" });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.message, "hgdgc");
     res.status(500).json({ message: error.message });
   }
 };
