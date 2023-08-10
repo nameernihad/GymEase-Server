@@ -34,7 +34,6 @@ const PasswordReset = async (req, res) => {
       res.status(201).json({ message: "password Updated", updatedData });
     }
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
