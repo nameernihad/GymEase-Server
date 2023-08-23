@@ -12,9 +12,10 @@ const userSchema = new mongoose.Schema({
   isBlock: { type: Boolean, default: false },
   isPremium: { type: Boolean, default: false },
   gender: { type: String },
+  height: { type: Number },
+  weight: { type: Number },
 });
 
-// create userModel from the schema
 const UserModel = mongoose.model("User", userSchema);
 
 module.exports = {

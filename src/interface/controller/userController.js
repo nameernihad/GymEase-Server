@@ -1,19 +1,23 @@
+const { allTrainers } = require("../../app/usecases/user/getAllTrainer");
 const {
   loginUser,
   loginWithGoogle,
 } = require("../../app/usecases/user/loginUser");
 const { signupUser } = require("../../app/usecases/user/signupUser");
+const { singleUser } = require("../../app/usecases/user/singleUser");
+const { userUpdate } = require("../../app/usecases/user/updateUser");
 const {
   validateSignupData,
   validateLoginData,
 } = require("../../domain/entities/userValidation");
 const { UserModel } = require("../../infra/database/userModel");
+const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
 const { generateToken } = require("../middleware/authToken");
 
-const db = new UserModel();
-
+const db = UserModel;
 const userRepository = UserRepoImpl(db);
+const trainerRepo = trainerRepoimpl(db);
 
 const UserRegister = async (req, res) => {
   try {
@@ -52,7 +56,8 @@ const UserLogin = async (req, res) => {
     const user = await loginUser(userRepository)(email, password);
 
     if (user) {
-      const token = generateToken(user);
+      const token = generateToken(user, process.env.USER_SECRET_KEY);
+      console.log(token);
       res.status(200).json({ message: "Login Successful", user, token });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
@@ -77,8 +82,58 @@ const userLoginWithGoogle = async (req, res) => {
   }
 };
 
+const singleView = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    console.log(userId);
+    const user = await singleUser(userRepository)(userId);
+    if (user) {
+      res.status(200).json({ message: "singeView of User loaded", user });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+const updateUser = async (req, res) => {
+  try {
+    const userDetails = req.body;
+    const userId = req.params;
+    console.log(userDetails, userId);
+    const updatedUser = await userUpdate(userRepository)(userId, userDetails);
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "An error occurred while updating user" });
+  }
+};
+
+const getTrainers = async (req, res) => {
+  try {
+    console.log(trainerRepo);
+    const Trainerdetails = await allTrainers(trainerRepo)({});
+    if (Trainerdetails) {
+      res.status(200).json({ Trainerdetails });
+    }
+  } catch (error) {
+    console.log(error.message, "trainer catch");
+  }
+};
+
 module.exports = {
   UserRegister,
   UserLogin,
   userLoginWithGoogle,
+  singleView,
+  updateUser,
+  getTrainers,
 };

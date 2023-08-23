@@ -1,28 +1,58 @@
 const jwt = require("jsonwebtoken");
-
 require("dotenv").config();
 
-const verifyToken = (req, res, next) => {
-  const secretKey = process.env.SECRET_KEY;
+const userSecretKey = process.env.USER_SECRET_KEY;
+const adminSecretKey = process.env.ADMIN_SECRET_KEY;
+const trainerSecretKey = process.env.TRAINER_SECRET_KEY;
 
-  const token = req.header("Authorization");
-
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized: No token provided." });
-  }
-
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: "Unauthorized: Invalid token." });
+const verifyToken = (authHeader, expectedSecretKey, req, res, next) => {
+  try {
+    if (!authHeader || !expectedSecretKey) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Not authenticated!", Auth: false });
     }
 
-    req.user = decoded;
-    next();
-  });
+    const token = authHeader.split(" ")[1];
+
+    jwt.verify(token, expectedSecretKey, (err, decoded) => {
+      if (err) {
+        console.log(err.message);
+        return res.status(403).json({ error: "Invalid token" });
+      }
+      if (decoded) {
+        req.user = decoded;
+        return next(); // Proceed to the next middleware/controller
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).json({
+      success: false,
+      message: "Not authenticated catch !",
+      Auth: false,
+    });
+  }
 };
 
-const generateToken = (payload) => {
-  const secretKey = process.env.SECRET_KEY;
+const userAuthToken = (req, res, next) => {
+  const authHeader = req.headers.client;
+  console.log(authHeader);
+  verifyToken(authHeader, userSecretKey, req, res, next);
+};
+
+const adminAuthToken = (req, res, next) => {
+  const authHeader = req.headers.admin;
+  console.log(authHeader);
+  verifyToken(authHeader, adminSecretKey, req, res, next);
+};
+
+const trainerAuthToken = (req, res, next) => {
+  const authHeader = req.headers.trainer;
+  verifyToken(authHeader, trainerSecretKey, req, res, next);
+};
+
+const generateToken = (payload, secretKey) => {
   const options = {
     expiresIn: "1h",
   };
@@ -32,5 +62,7 @@ const generateToken = (payload) => {
 
 module.exports = {
   generateToken,
-  verifyToken,
+  userAuthToken,
+  adminAuthToken,
+  trainerAuthToken,
 };

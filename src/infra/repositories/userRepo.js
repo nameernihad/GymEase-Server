@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
     try {
-      const createdUser = await UserModel.create(user);
+      const createdUser = await userModel.create(user);
       return createdUser.toObject();
     } catch (error) {
       console.log(error.message);
@@ -12,7 +12,7 @@ const UserRepoImpl = (userModel) => {
   };
 
   const findByemail = async (email) => {
-    const user = await UserModel.findOne({
+    const user = await userModel.findOne({
       email,
       isAdmin: false,
       isTrainer: false,
@@ -21,18 +21,19 @@ const UserRepoImpl = (userModel) => {
   };
 
   const getUserById = async (userid) => {
-    const userById = await UserModel.findOne({ _id: userid });
-    console.log(userById);
-    return userById;
+    console.log(userid, "repo");
+    const user = await userModel.findById(userid);
+
+    return user;
   };
 
   const findOne = async (user) => {
-    const currentUser = await UserModel.findOne({ user });
+    const currentUser = await userModel.findOne({ user });
     return currentUser ? currentUser.toObject() : null;
   };
 
   const find = async () => {
-    const allUser = await UserModel.find({
+    const allUser = await userModel.find({
       $and: [{ isAdmin: false }, { isTrainer: false }],
     });
     return allUser;
@@ -40,11 +41,11 @@ const UserRepoImpl = (userModel) => {
 
   const BlockingUser = async (id) => {
     try {
-      const user = await UserModel.findOne({ _id: id });
+      const user = await userModel.findOne({ _id: id });
       if (user) {
         const updatedIsBlock = !user.isBlock;
 
-        const updateResult = await UserModel.updateOne(
+        const updateResult = await userModel.updateOne(
           { _id: id },
           { $set: { isBlock: updatedIsBlock } }
         );
@@ -66,7 +67,7 @@ const UserRepoImpl = (userModel) => {
     try {
       console.log(userId, password);
       const hashedPassword = await bcrypt.hash(password, 10);
-      const updatedData = await UserModel.findByIdAndUpdate(
+      const updatedData = await userModel.findByIdAndUpdate(
         { _id: userId },
         {
           $set: { password: hashedPassword },
@@ -79,6 +80,27 @@ const UserRepoImpl = (userModel) => {
     }
   };
 
+  const UpdatedUser = async (userId, userDetails) => {
+    console.log(userDetails);
+    const { name, email, phone, gender, height, weight } = userDetails;
+    try {
+      const updatedData = await userModel.findByIdAndUpdate(
+        userId,
+        {
+          name,
+          email,
+          phone,
+          gender,
+          height,
+          weight,
+        },
+        { new: true }
+      );
+    } catch (error) {
+      return error.message;
+    }
+  };
+
   return {
     Create,
     findByemail,
@@ -87,6 +109,7 @@ const UserRepoImpl = (userModel) => {
     findOne,
     BlockingUser,
     PasswordReset,
+    UpdatedUser,
   };
 };
 

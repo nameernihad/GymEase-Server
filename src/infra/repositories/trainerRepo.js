@@ -6,7 +6,6 @@ const trainerRepoimpl = (userModel) => {
 
   const trainerDetails = async () => {
     const allTraners = await userModel.find({ isTrainer: true });
-    console.log(allTraners);
     return allTraners;
   };
 

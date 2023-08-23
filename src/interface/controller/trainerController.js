@@ -11,14 +11,13 @@ const trainerRepo = trainerRepoimpl(db);
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
     const validationErrors = validateLoginData(req.body);
-    if (validationErrors.length > 0) {
-      return res.status(400).json({ errors: validationErrors });
-    }
+
     const trainer = await trainerLogin(trainerRepo)(email, password);
 
     if (trainer) {
-      const token = generateToken(trainer);
+      const token = generateToken(trainer, process.env.TRAINER_SECRET_KEY);
       res.status(200).json({ message: "login Successful", trainer, token });
     } else {
       res.status(401).json({ message: "you are not an trainer" });

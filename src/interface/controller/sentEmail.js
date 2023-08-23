@@ -5,7 +5,7 @@ const { UserModel } = require("../../infra/database/userModel");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
 const { sendMail } = require("../../services/sentMail");
 
-const db = new UserModel();
+const db = UserModel;
 
 const userRepository = UserRepoImpl(db);
 
@@ -26,9 +26,10 @@ const sentEmial = async (req, res) => {
 
 const PasswordReset = async (req, res) => {
   try {
+    console.log("hdhdhdhdhdh");
     const { userId } = req.params;
     const { password } = req.body;
-    console.log(userId, password);
+    console.log(userId, password, "fffffffffffffffffffff");
     const updatedData = await setNewPassword(userRepository)(userId, password);
     if (updatedData) {
       res.status(201).json({ message: "password Updated", updatedData });
