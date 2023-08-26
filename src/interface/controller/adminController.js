@@ -31,7 +31,7 @@ const Login = async (req, res) => {
     const admin = await adminLogin(adminRepo)(email, password);
 
     if (admin) {
-      const token = generateToken(admin,process.env.ADMIN_SECRET_KEY);
+      const token = generateToken(admin, process.env.ADMIN_SECRET_KEY);
       res.status(200).json({ message: "login Successful", admin, token });
     } else {
       res.status(401).json({ message: "you are not an admin" });
