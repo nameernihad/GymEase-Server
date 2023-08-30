@@ -37,11 +37,21 @@ const CategoryRepoImp = (CategoryModel) => {
       console.log(error.message);
     }
   };
+  const findById = async (categoryId) => {
+    try {
+      id = categoryId.categoryId;
+      const fechdata = await CategoryModel.findById({ _id: id });
+      return fechdata;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return {
     Create,
     updateCategory,
     listcategory,
     categorydelete,
+    findById,
   };
 };
 

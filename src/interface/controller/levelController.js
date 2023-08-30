@@ -1,6 +1,7 @@
 const { insertLevel } = require("../../app/usecases/level/addLevel");
 const { deleteLevel } = require("../../app/usecases/level/deleteLevel");
 const { getLevelList } = require("../../app/usecases/level/getLevel");
+const { LevelById } = require("../../app/usecases/level/getLevelById");
 const { levelUpdate } = require("../../app/usecases/level/updateLevel");
 const { levelModel } = require("../../infra/database/levelModel");
 const { levelRepoImp } = require("../../infra/repositories/LevelRepo");
@@ -26,6 +27,7 @@ const addLevel = async (req, res) => {
 const updatelevel = async (req, res) => {
   try {
     const levelId = req.params;
+    console.log(levelId);
     const level = req.body;
     const updatedlevel = await levelUpdate(levelRepo)(levelId, level);
     if (updatedlevel) {
@@ -55,7 +57,21 @@ const levelDelete = async (req, res) => {
     const levelId = req.params;
     const deletedLevel = await deleteLevel(levelRepo)(levelId);
     if (deletedLevel) {
-      res.status(204).json({ message: "level Successfully deleted" });
+      res.status(201).json({ message: "level successfully deleted" });
+    } else {
+      res.status(400).json({ message: "something went wrong" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getLevelById = async (req, res) => {
+  try {
+    const LevelId = req.params;
+    console.log(LevelId, "controll");
+    const Level = await LevelById(levelRepo)(LevelId);
+    if (Level) {
+      res.status(200).json({ message: "Level fetch successfully", Level });
     } else {
       res.status(400).json({ message: "something went wrong" });
     }
@@ -68,4 +84,5 @@ module.exports = {
   updatelevel,
   levelList,
   levelDelete,
+  getLevelById,
 };

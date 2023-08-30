@@ -21,12 +21,14 @@ const {
   updatelevel,
   levelList,
   levelDelete,
+  getLevelById,
 } = require("../controller/levelController");
 const {
   addCategory,
   updateCategory,
   Categorylist,
   categoryDelete,
+  getCategoryById,
 } = require("../controller/categoryController");
 
 const adminRoutes = express.Router();
@@ -46,6 +48,12 @@ adminRoutes.get("/getAllTrainer", adminAuthToken, TrainerlistController);
 adminRoutes.get("/getAllWorkouts", adminAuthToken, WorkoutlistController);
 adminRoutes.get("/getAllLevel", adminAuthToken, levelList);
 adminRoutes.get("/getAllCategory", adminAuthToken, Categorylist);
+adminRoutes.get(
+  "/getCategoryById/:categoryId",
+  adminAuthToken,
+  getCategoryById
+);
+adminRoutes.get("/getLevelById/:categoryId", adminAuthToken, getLevelById);
 adminRoutes.get("/showUser/:userId", adminAuthToken, UserSingleView);
 
 adminRoutes.put("/blockuser/:userId", adminAuthToken, UserBlocking);

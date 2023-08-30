@@ -3,6 +3,7 @@ const {
   deletecategory,
 } = require("../../app/usecases/category/deleteCategory");
 const { getcategoryList } = require("../../app/usecases/category/getCategory");
+const { CategoryById } = require("../../app/usecases/category/getCategoryById");
 const {
   categoryUpdate,
 } = require("../../app/usecases/category/updateCategory");
@@ -66,7 +67,22 @@ const categoryDelete = async (req, res) => {
     const categoryId = req.params;
     const deletedcategory = await deletecategory(categoryRepo)(categoryId);
     if (deletedcategory) {
-      res.status(204).json({ message: "category Successfully deleted" });
+      res.status(201).json({ message: "category successfully deleted" });
+    } else {
+      res.status(400).json({ message: "something went wrong" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+const getCategoryById = async (req, res) => {
+  try {
+    const categoryId = req.params;
+    const Category = await CategoryById(categoryRepo)(categoryId);
+    if (Category) {
+      res
+        .status(200)
+        .json({ message: "category fetch successfully", Category });
     } else {
       res.status(400).json({ message: "something went wrong" });
     }
@@ -79,4 +95,5 @@ module.exports = {
   updateCategory,
   Categorylist,
   categoryDelete,
+  getCategoryById,
 };

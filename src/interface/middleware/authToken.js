@@ -37,13 +37,11 @@ const verifyToken = (authHeader, expectedSecretKey, req, res, next) => {
 
 const userAuthToken = (req, res, next) => {
   const authHeader = req.headers.client;
-  console.log(authHeader);
   verifyToken(authHeader, userSecretKey, req, res, next);
 };
 
 const adminAuthToken = (req, res, next) => {
   const authHeader = req.headers.admin;
-  console.log(authHeader);
   verifyToken(authHeader, adminSecretKey, req, res, next);
 };
 

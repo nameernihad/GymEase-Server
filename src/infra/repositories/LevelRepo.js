@@ -8,6 +8,7 @@ const levelRepoImp = (levelModel) => {
     }
   };
   const updatelevel = async (Id, level) => {
+    console.log(Id, "repo");
     const id = Id.levelId;
     const { name, description, image } = level;
     try {
@@ -37,11 +38,21 @@ const levelRepoImp = (levelModel) => {
       console.log(error.message);
     }
   };
+  const findById = async (levelId) => {
+    try {
+      id = levelId.levelId;
+      const fechdata = await levelModel.findById({ _id: id });
+      return fechdata;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return {
     Create,
     updatelevel,
     listLevel,
     leveldelete,
+    findById,
   };
 };
 
