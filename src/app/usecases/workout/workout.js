@@ -42,10 +42,20 @@ const deleteWorkout = (workoutRepo) => async (workoutId) => {
     throw new Error("Failed to update workout.");
   }
 };
+const findWorkout = (workoutRepo) => async (filters) => {
+  try {
+    const filtered = await workoutRepo.filterWorkout(filters);
+    return filtered;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Failed to find workout.");
+  }
+};
 
 module.exports = {
   WorkoutList,
   updateWorkouts,
   insertWorkout,
   deleteWorkout,
+  findWorkout,
 };

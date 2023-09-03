@@ -12,6 +12,7 @@ const {
   WorkoutlistController,
   UpdateWorkout,
   WorkoutDelete,
+  filterWorkout,
 } = require("../controller/workoutController");
 const { adminAuthToken } = require("../middleware/authToken");
 const fileUpload = require("../controller/fileUploadController");
@@ -53,8 +54,13 @@ adminRoutes.get(
   adminAuthToken,
   getCategoryById
 );
-adminRoutes.get("/getLevelById/:categoryId", adminAuthToken, getLevelById);
+adminRoutes.get("/getLevelById/:levelId", adminAuthToken, getLevelById);
 adminRoutes.get("/showUser/:userId", adminAuthToken, UserSingleView);
+adminRoutes.get(
+  "/filteredWorkout/:levelName/:categoryName",
+  adminAuthToken,
+  filterWorkout
+);
 
 adminRoutes.put("/blockuser/:userId", adminAuthToken, UserBlocking);
 adminRoutes.put("/blocktrainer/:userId", adminAuthToken, UserBlocking);

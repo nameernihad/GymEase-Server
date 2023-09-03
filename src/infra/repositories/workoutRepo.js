@@ -39,12 +39,26 @@ const workoutRepoImp = (workoutModel) => {
       throw new Error("Failed to delete workout.");
     }
   };
+  const filterWorkout = async (filters) => {
+    try {
+      const { levelName, categoryName } = filters;
+      const workouts = await workoutModel.find({
+        Level: levelName,
+        category: categoryName,
+      });
+      return workouts;
+    } catch (error) {
+      console.log(error.message);
+      throw new Error("Failed to find workout.");
+    }
+  };
 
   return {
     Create,
     listWorkout,
     UpdateWorkout,
     deleteWorkout,
+    filterWorkout,
   };
 };
 

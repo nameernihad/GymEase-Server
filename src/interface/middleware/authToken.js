@@ -52,7 +52,7 @@ const trainerAuthToken = (req, res, next) => {
 
 const generateToken = (payload, secretKey) => {
   const options = {
-    expiresIn: "1h",
+    expiresIn: "1d",
   };
 
   return jwt.sign(payload, secretKey, options);

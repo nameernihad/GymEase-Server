@@ -56,6 +56,7 @@ const UserLogin = async (req, res) => {
     const user = await loginUser(userRepository)(email, password);
 
     if (user) {
+      console.log(user);
       const token = generateToken(user, process.env.USER_SECRET_KEY);
       console.log(token);
       res.status(200).json({ message: "Login Successful", user, token });

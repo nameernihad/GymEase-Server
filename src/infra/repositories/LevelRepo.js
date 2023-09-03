@@ -40,8 +40,7 @@ const levelRepoImp = (levelModel) => {
   };
   const findById = async (levelId) => {
     try {
-      id = levelId.levelId;
-      const fechdata = await levelModel.findById({ _id: id });
+      const fechdata = await levelModel.findById({ _id: levelId.levelId });
       return fechdata;
     } catch (error) {
       console.log(error.message);

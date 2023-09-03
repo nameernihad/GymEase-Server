@@ -2,6 +2,7 @@ const {
   updateWorkouts,
   WorkoutList,
   deleteWorkout,
+  findWorkout,
 } = require("../../app/usecases/workout/workout");
 const { insertWorkout } = require("../../app/usecases/workout/workout");
 const { workoutModel } = require("../../infra/database/workouts");
@@ -91,10 +92,22 @@ const WorkoutDelete = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const filterWorkout = async (req, res) => {
+  try {
+    const fiters = req.params;
+    const filteredWorkout = await findWorkout(workoutRepo)(fiters);
+    if (filterWorkout) {
+      res
+        .status(200)
+        .json({ message: "workout filtered Successfully", filteredWorkout });
+    }
+  } catch (error) {}
+};
 
 module.exports = {
   AddWorkout,
   WorkoutlistController,
   UpdateWorkout,
   WorkoutDelete,
+  filterWorkout,
 };
