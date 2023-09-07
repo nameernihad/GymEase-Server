@@ -14,13 +14,22 @@ const { TrainerList } = require("../../app/usecases/admin/trainerList");
 const { workoutRepoImp } = require("../../infra/repositories/workoutRepo");
 
 const { workoutModel } = require("../../infra/database/workouts");
+const {
+  joinTrainerRepoimpl,
+} = require("../../infra/repositories/newTrainerJoin");
+const joinTrainerModal = require("../../infra/database/trainerDetails");
+const {
+  showRequests,
+} = require("../../app/usecases/newTrainer/getAllRequests");
 
 const db = UserModel;
 const workoutdb = workoutModel;
+const trainerDb = joinTrainerModal;
 
 const adminRepo = adminRepoimpl(db);
 const userRepo = UserRepoImpl(db);
 const trainerRepo = trainerRepoimpl(db);
+const joinTrianerRepo = joinTrainerRepoimpl(trainerDb);
 
 const Login = async (req, res) => {
   try {
@@ -49,7 +58,7 @@ const UserListController = async (req, res) => {
       res.status(200).json({ userList });
     }
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -63,7 +72,6 @@ const UserBlocking = async (req, res) => {
       res.status(201).json({ message: "user UnBlocked", status });
     }
   } catch (error) {
-    console.log(error.message, "catch");
     res.status(500).json({ message: "internal server error" });
   }
 };
@@ -75,20 +83,50 @@ const TrainerlistController = async (req, res) => {
       res.status(200).json({ Trainerdetails });
     }
   } catch (error) {
-    console.log(error.message, "trainer catch");
+    res.status(500).json({ message: error.message });
   }
 };
 
 const UserSingleView = async (req, res) => {
   try {
     const id = req.params.userId;
-    console.log(id, "cont");
     const userview = await showUserById(userRepo)(id);
     if (userview) {
       res.status(200).json({ userview });
     }
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const trainerRequest = async (req, res) => {
+  try {
+    const allTrainerRequest = await showRequests(joinTrianerRepo)();
+    if (allTrainerRequest) {
+      res.status(200).json({
+        message: "all request successfully fetched",
+        allTrainerRequest,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const requestValidtion = async (req, res) => {
+  try {
+    const requesterId = req.params.id;
+    const Status = req.body;
+    validaionDetails = {
+      userId: requesterId,
+      status: Status,
+    };
+
+    const validated = await validation(joinTrianerRepo)(validaionDetails);
+    if (validated) {
+      res.status(202).josn({ message: "Status successfully updated" });
+    }
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
@@ -99,4 +137,6 @@ module.exports = {
   UserBlocking,
   TrainerlistController,
   UserSingleView,
+  trainerRequest,
+  requestValidtion,
 };

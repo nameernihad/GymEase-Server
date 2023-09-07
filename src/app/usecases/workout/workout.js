@@ -1,15 +1,16 @@
 const insertWorkout =
   (workoutRepo) =>
-  async (name, description, category, Level, gif, count, timer) => {
+  async (name, description, category, level, gif, count, timer) => {
     const newWorkout = {
       name,
       description,
       category,
-      Level,
+      level,
       gif,
       count,
       timer,
     };
+    console.log(newWorkout, "uscase");
     const createdUser = await workoutRepo.Create(newWorkout);
     return createdUser;
   };

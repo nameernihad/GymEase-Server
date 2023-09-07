@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
   isAdmin: { type: Boolean, default: false },
   isBlock: { type: Boolean, default: false },
   isPremium: { type: Boolean, default: false },
+  avatar: { type: String },
   gender: { type: String },
   height: { type: Number },
   weight: { type: Number },

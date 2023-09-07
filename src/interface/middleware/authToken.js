@@ -16,13 +16,14 @@ const verifyToken = (authHeader, expectedSecretKey, req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     jwt.verify(token, expectedSecretKey, (err, decoded) => {
+      console.log(token);
       if (err) {
         console.log(err.message);
         return res.status(403).json({ error: "Invalid token" });
       }
       if (decoded) {
         req.user = decoded;
-        return next(); // Proceed to the next middleware/controller
+        return next();
       }
     });
   } catch (error) {

@@ -5,6 +5,7 @@ const {
   UserBlocking,
   TrainerlistController,
   UserSingleView,
+  trainerRequest,
 } = require("../controller/adminController");
 
 const {
@@ -55,9 +56,10 @@ adminRoutes.get(
   getCategoryById
 );
 adminRoutes.get("/getLevelById/:levelId", adminAuthToken, getLevelById);
-adminRoutes.get("/showUser/:userId", adminAuthToken, UserSingleView);
+adminRoutes.get("/showUser", adminAuthToken, UserSingleView);
+adminRoutes.get("/trainerRequest", adminAuthToken, trainerRequest);
 adminRoutes.get(
-  "/filteredWorkout/:levelName/:categoryName",
+  "/filteredWorkout/:levelId/:categoryId",
   adminAuthToken,
   filterWorkout
 );
@@ -75,5 +77,7 @@ adminRoutes.delete(
   adminAuthToken,
   categoryDelete
 );
+
+// adminRoutes.patch("requestValidtion/:id",requestValidtion);
 
 module.exports = adminRoutes;

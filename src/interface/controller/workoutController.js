@@ -5,6 +5,8 @@ const {
   findWorkout,
 } = require("../../app/usecases/workout/workout");
 const { insertWorkout } = require("../../app/usecases/workout/workout");
+const { categoryModel } = require("../../infra/database/categoryModel");
+const { levelModel } = require("../../infra/database/levelModel");
 const { workoutModel } = require("../../infra/database/workouts");
 const { workoutRepoImp } = require("../../infra/repositories/workoutRepo");
 
@@ -13,22 +15,36 @@ const workoutRepo = workoutRepoImp(workoutdb);
 
 const AddWorkout = async (req, res) => {
   try {
+    console.log(req.body);
     const { name, description, category, level, gif, count, timer } = req.body;
+
+    // Convert category and level names to ObjectId references
+    const categoryObj = await categoryModel.findOne({ name: category });
+    const levelObj = await levelModel.findOne({ name: level });
+
+    if (!categoryObj || !levelObj) {
+      // Handle the case where the category or level doesn't exist
+      return res
+        .status(400)
+        .json({ message: "Invalid category or level name" });
+    }
+
     const createdWorkout = await insertWorkout(workoutRepo)(
       name,
       description,
-      category,
-      level,
+      categoryObj._id, // Use the ObjectId reference
+      levelObj._id, // Use the ObjectId reference
       gif,
       count,
       timer
     );
+
     if (createdWorkout) {
       res
         .status(201)
-        .json({ message: "workout successfully added", createdWorkout });
+        .json({ message: "Workout successfully added", createdWorkout });
     } else {
-      res.status(400).json({ message: "something went wrong" });
+      res.status(400).json({ message: "Something went wrong" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -1,0 +1,50 @@
+const mongoose = require("mongoose");
+
+const trainerSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  about: {
+    type: String,
+  },
+  experience: {
+    years: {
+      type: Number,
+      default: 0,
+    },
+    months: {
+      type: Number,
+      default: 0,
+    },
+    days: {
+      type: Number,
+      default: 0,
+    },
+  },
+  status: {
+    type: String,
+    default: "pending",
+  },
+  certifications: [
+    {
+      file: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  experienceDetails: {
+    type: String,
+  },
+  profilePhoto: {
+    type: String,
+  },
+  coverPhoto: {
+    type: String,
+  },
+});
+
+const joinTrainerModal = mongoose.model("TrainerDetails", trainerSchema);
+
+module.exports = joinTrainerModal;

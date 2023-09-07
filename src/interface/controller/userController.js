@@ -1,4 +1,5 @@
 const { allTrainers } = require("../../app/usecases/user/getAllTrainer");
+const { joinTrainer } = require("../../app/usecases/user/joinAsTrainer");
 const {
   loginUser,
   loginWithGoogle,
@@ -10,14 +11,20 @@ const {
   validateSignupData,
   validateLoginData,
 } = require("../../domain/entities/userValidation");
+const joinTrainerModal = require("../../infra/database/trainerDetails");
 const { UserModel } = require("../../infra/database/userModel");
+const {
+  joinTrainerRepoimpl,
+} = require("../../infra/repositories/newTrainerJoin");
 const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
 const { generateToken } = require("../middleware/authToken");
 
 const db = UserModel;
+const trainerDb = joinTrainerModal;
 const userRepository = UserRepoImpl(db);
 const trainerRepo = trainerRepoimpl(db);
+const joinTrianerRepo = joinTrainerRepoimpl(trainerDb);
 
 const UserRegister = async (req, res) => {
   try {
@@ -85,7 +92,7 @@ const userLoginWithGoogle = async (req, res) => {
 
 const singleView = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user._id;
     console.log(userId);
     const user = await singleUser(userRepository)(userId);
     if (user) {
@@ -120,13 +127,47 @@ const updateUser = async (req, res) => {
 
 const getTrainers = async (req, res) => {
   try {
-    console.log(trainerRepo);
     const Trainerdetails = await allTrainers(trainerRepo)({});
     if (Trainerdetails) {
       res.status(200).json({ Trainerdetails });
     }
   } catch (error) {
     console.log(error.message, "trainer catch");
+  }
+};
+const joinAsTrainer = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const {
+      username,
+      about,
+      experience,
+      certifications,
+      experienceDetails,
+      profilePhoto,
+      coverPhoto,
+    } = req.body;
+
+    const trainerRequest = {
+      user: userId,
+      username,
+      about,
+      experience,
+      certifications,
+      experienceDetails,
+      profilePhoto,
+      coverPhoto,
+    };
+
+    const newTrainer = await joinTrainer(joinTrianerRepo)(trainerRequest);
+    if (newTrainer) {
+      res.status(201).json({ message: "trainer request sented", newTrainer });
+    } else {
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
@@ -137,4 +178,5 @@ module.exports = {
   singleView,
   updateUser,
   getTrainers,
+  joinAsTrainer,
 };

@@ -4,7 +4,6 @@ const workoutRepoImp = (workoutModel) => {
   const Create = async (workout) => {
     try {
       const createdWorkout = await workoutModel.create(workout);
-      return createdWorkout.toObject();
     } catch (error) {
       console.log(error.message);
     }
@@ -12,9 +11,18 @@ const workoutRepoImp = (workoutModel) => {
 
   const listWorkout = async () => {
     try {
-      const workoutList = await workoutModel.find();
+      const workoutList = await workoutModel
+        .find()
+        .populate("level") // Populate the 'level' field
+        .populate("category") // Populate the 'category' field
+        .exec();
+
       return workoutList;
-    } catch (error) {}
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      throw error; // Re-throw the error to be handled by the caller
+    }
   };
 
   const UpdateWorkout = async (workoutId, updateData) => {
@@ -41,11 +49,16 @@ const workoutRepoImp = (workoutModel) => {
   };
   const filterWorkout = async (filters) => {
     try {
-      const { levelName, categoryName } = filters;
-      const workouts = await workoutModel.find({
-        Level: levelName,
-        category: categoryName,
-      });
+      const { levelId, categoryId } = filters;
+      const workouts = await workoutModel
+        .find({
+          level: levelId,
+          category: categoryId,
+        })
+        .populate("level")
+        .populate("category")
+        .exec();
+
       return workouts;
     } catch (error) {
       console.log(error.message);
