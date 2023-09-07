@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const morgan = require("morgan");
 
 const userController = require("./src/interface/controller/userController");
 const router = require("./src/interface/routes/userRoutes");
@@ -11,7 +12,9 @@ const trainerRoutes = require("./src/interface/routes/trainerRoutes");
 require("dotenv").config();
 
 const app = express();
+
 app.use(cors());
+app.use(morgan("dev"));
 
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));

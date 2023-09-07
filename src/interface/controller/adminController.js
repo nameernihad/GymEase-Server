@@ -21,6 +21,9 @@ const joinTrainerModal = require("../../infra/database/trainerDetails");
 const {
   showRequests,
 } = require("../../app/usecases/newTrainer/getAllRequests");
+const {
+  validation,
+} = require("../../app/usecases/newTrainer/trainerValidation");
 
 const db = UserModel;
 const workoutdb = workoutModel;
@@ -115,16 +118,19 @@ const trainerRequest = async (req, res) => {
 
 const requestValidtion = async (req, res) => {
   try {
-    const requesterId = req.params.id;
-    const Status = req.body;
+    const { id } = req.params; // Assuming you have the ID of newTrainerDetails
+    const { status } = req.body;
+    console.log(id, status, "controller");
     validaionDetails = {
-      userId: requesterId,
-      status: Status,
+      detailsID: id,
+      Status: status,
     };
 
     const validated = await validation(joinTrianerRepo)(validaionDetails);
     if (validated) {
-      res.status(202).josn({ message: "Status successfully updated" });
+      res
+        .status(202)
+        .json({ message: "Status successfully updated", validated });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

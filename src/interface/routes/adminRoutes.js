@@ -6,6 +6,7 @@ const {
   TrainerlistController,
   UserSingleView,
   trainerRequest,
+  requestValidtion,
 } = require("../controller/adminController");
 
 const {
@@ -78,6 +79,6 @@ adminRoutes.delete(
   categoryDelete
 );
 
-// adminRoutes.patch("requestValidtion/:id",requestValidtion);
+adminRoutes.patch("/requestValidtion/:id", requestValidtion);
 
 module.exports = adminRoutes;
