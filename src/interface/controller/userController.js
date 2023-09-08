@@ -140,29 +140,32 @@ const joinAsTrainer = async (req, res) => {
     const userId = req.params.id;
 
     const {
-      username,
       about,
       experience,
       certifications,
       experienceDetails,
       profilePhoto,
       coverPhoto,
+      paymentDetails,
+      gender,
     } = req.body;
 
     const trainerRequest = {
       user: userId,
-      username,
+
       about,
       experience,
       certifications,
       experienceDetails,
       profilePhoto,
       coverPhoto,
+      paymentDetails,
+      gender,
     };
 
     const newTrainer = await joinTrainer(joinTrianerRepo)(trainerRequest);
     if (newTrainer) {
-      res.status(201).json({ message: "trainer request sented", newTrainer });
+      res.status(201).json({ message: "Trainer request sent", newTrainer });
     } else {
       res.status(500).json({ message: "Something went wrong" });
     }

@@ -43,6 +43,24 @@ const trainerSchema = new mongoose.Schema({
   coverPhoto: {
     type: String,
   },
+  paymentDetails: {
+    oneMonth: {
+      type: Number,
+      default: 0,
+    },
+    sixMonths: {
+      type: Number,
+      default: 0,
+    },
+    oneYear: {
+      type: Number,
+      default: 0,
+    },
+  },
+  gender: {
+    type: String,
+    enum: ["male", "female", "other"],
+  },
 });
 
 const joinTrainerModal = mongoose.model("TrainerDetails", trainerSchema);

@@ -19,7 +19,7 @@ router.put("/updateUser/:userId", userAuthToken, userController.updateUser);
 
 router.patch("/resetPass/:userId", userAuthToken, sentEmail.PasswordReset);
 
-router.get("/singView/:userId", userAuthToken, userController.singleView);
+router.get("/singView", userAuthToken, userController.singleView);
 router.get("/getAllTrainer", userAuthToken, userController.getTrainers);
 
 module.exports = router;

@@ -120,7 +120,6 @@ const requestValidtion = async (req, res) => {
   try {
     const { id } = req.params; // Assuming you have the ID of newTrainerDetails
     const { status } = req.body;
-    console.log(id, status, "controller");
     validaionDetails = {
       detailsID: id,
       Status: status,
