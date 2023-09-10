@@ -6,7 +6,7 @@ const { userAuthToken } = require("../middleware/authToken");
 const router = express.Router();
 
 router.post("/register", userController.UserRegister);
-router.post("/joinAsTrainer/:id", userController.joinAsTrainer);
+router.post("/joinAsTrainer", userAuthToken, userController.joinAsTrainer);
 router.post("/login", userController.UserLogin);
 router.post(
   "/loginWithGoogle",

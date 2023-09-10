@@ -10,7 +10,8 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
 
   const getAllRequest = async () => {
     try {
-      const allRequests = await newTrianerModel.find();
+      const allRequests = await newTrianerModel.find().populate("user");
+      console.log(allRequests);
       return allRequests;
     } catch (error) {
       console.log(error.message);

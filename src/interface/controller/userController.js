@@ -137,8 +137,7 @@ const getTrainers = async (req, res) => {
 };
 const joinAsTrainer = async (req, res) => {
   try {
-    const userId = req.params.id;
-
+    const userId = req.user._id;
     const {
       about,
       experience,
@@ -162,10 +161,14 @@ const joinAsTrainer = async (req, res) => {
       paymentDetails,
       gender,
     };
+    console.log(req.body);
 
     const newTrainer = await joinTrainer(joinTrianerRepo)(trainerRequest);
     if (newTrainer) {
-      res.status(201).json({ message: "Trainer request sent", newTrainer });
+      res.status(201).json({
+        message: "Trainer request successfully submitted",
+        newTrainer,
+      });
     } else {
       res.status(500).json({ message: "Something went wrong" });
     }

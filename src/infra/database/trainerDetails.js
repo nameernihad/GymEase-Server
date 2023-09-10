@@ -26,14 +26,7 @@ const trainerSchema = new mongoose.Schema({
     type: String,
     default: "pending",
   },
-  certifications: [
-    {
-      file: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  certifications: [{ type: String }],
   experienceDetails: {
     type: String,
   },
