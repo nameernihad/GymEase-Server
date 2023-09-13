@@ -13,7 +13,7 @@ router.post(
 
   userController.userLoginWithGoogle
 );
-router.post("/sentMail/", userAuthToken, sentEmail.sentEmial);
+router.post("/sentMail/", sentEmail.sentEmial);
 
 router.put("/updateUser/:userId", userAuthToken, userController.updateUser);
 

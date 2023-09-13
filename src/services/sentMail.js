@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 
-const sendMail = (userData) => {
+const sendMail = (emailOptions) => {
+  console.log(emailOptions);
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -13,13 +14,9 @@ const sendMail = (userData) => {
   });
   const mailOptions = {
     from: process.env.EMAIL,
-    to: userData.email,
-    subject: "Password Reset",
-    html: `
-      <p>Hello,${userData.name}</p>
-      <p>Please click the link below to reset your password:</p>
-      <a href="http://localhost:3000/restPass/${userData._id}">Reset Password</a>
-    `,
+    to: emailOptions.to,
+    subject: emailOptions.subject,
+    html: emailOptions.html,
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {

@@ -11,7 +11,6 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
   const getAllRequest = async () => {
     try {
       const allRequests = await newTrianerModel.find().populate("user");
-      console.log(allRequests);
       return allRequests;
     } catch (error) {
       console.log(error.message);
@@ -21,7 +20,6 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
   const validation = async (validationDetails) => {
     try {
       const { detailsID, Status } = validationDetails;
-
       const newTrainerDetails = await newTrianerModel
         .findById(detailsID)
         .populate("user");
@@ -32,15 +30,17 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
 
       newTrainerDetails.status = Status;
 
-      if (Status === "approved") {
+      if (Status === "approve") {
         newTrainerDetails.user.isTrainer = true;
-      } else if (Status === "rejected") {
+      } else if (Status === "reject") {
+        newTrainerDetails.user.isTrainer = false;
+      } else if (Status === "pending") {
         newTrainerDetails.user.isTrainer = false;
       }
 
       await newTrainerDetails.save();
       await newTrainerDetails.user.save();
-      return true;
+      return newTrainerDetails;
     } catch (error) {
       console.error(error.message);
       return false;

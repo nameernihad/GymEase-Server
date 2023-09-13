@@ -13,7 +13,16 @@ const sentEmial = async (req, res) => {
   try {
     const { email } = req.body;
     const userData = await userRepository.findByemail(email);
-    const emailsented = sendMail(userData);
+    const emailOptions = {
+      to: userData.email,
+      subject: "Password Reset",
+      html: `
+      <p>Hello,${userData.name}</p>
+      <p>Please click the link below to reset your password:</p>
+      <a href="http://localhost:3000/restPass/${userData._id}">Reset Password</a>
+    `,
+    };
+    const emailsented = sendMail(emailOptions);
     if (emailsented) {
       res
         .status(200)
@@ -26,10 +35,8 @@ const sentEmial = async (req, res) => {
 
 const PasswordReset = async (req, res) => {
   try {
-    console.log("hdhdhdhdhdh");
     const { userId } = req.params;
     const { password } = req.body;
-    console.log(userId, password, "fffffffffffffffffffff");
     const updatedData = await setNewPassword(userRepository)(userId, password);
     if (updatedData) {
       res.status(201).json({ message: "password Updated", updatedData });

@@ -24,6 +24,7 @@ const {
 const {
   validation,
 } = require("../../app/usecases/newTrainer/trainerValidation");
+const { sendMail } = require("../../services/sentMail");
 
 const db = UserModel;
 const workoutdb = workoutModel;
@@ -118,7 +119,7 @@ const trainerRequest = async (req, res) => {
 
 const requestValidtion = async (req, res) => {
   try {
-    const { id } = req.params; // Assuming you have the ID of newTrainerDetails
+    const id = req.params.id;
     const { status } = req.body;
     validaionDetails = {
       detailsID: id,
@@ -126,12 +127,39 @@ const requestValidtion = async (req, res) => {
     };
 
     const validated = await validation(joinTrianerRepo)(validaionDetails);
+
     if (validated) {
+      console.log(validated);
+
+      const emailOptions = {
+        to: validated.validate.user.email,
+        subject: "Request Status",
+        html: `
+          <p>Hello, ${validated.validate.user.name}</p>
+          <p style="color: ${
+            validated.validate.status === "approve" ? "green" : "red"
+          }">
+            Your Request Status for join as trainer was ${
+              validated.validate.status
+            }
+          </p>
+  
+          ${
+            validated.validate.status === "approve"
+              ? '<a href="http://localhost:3000/trainer/login">Login as Trainer</a>'
+              : ""
+          }
+        `,
+      };
+
+      sendMail(emailOptions);
+
       res
         .status(202)
         .json({ message: "Status successfully updated", validated });
     }
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };

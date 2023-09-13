@@ -161,7 +161,6 @@ const joinAsTrainer = async (req, res) => {
       paymentDetails,
       gender,
     };
-    console.log(req.body);
 
     const newTrainer = await joinTrainer(joinTrianerRepo)(trainerRequest);
     if (newTrainer) {
