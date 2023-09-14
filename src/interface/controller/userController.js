@@ -127,7 +127,8 @@ const updateUser = async (req, res) => {
 
 const getTrainers = async (req, res) => {
   try {
-    const Trainerdetails = await allTrainers(trainerRepo)({});
+    const Trainerdetails = await allTrainers(joinTrianerRepo)({});
+    console.log(Trainerdetails);
     if (Trainerdetails) {
       res.status(200).json({ Trainerdetails });
     }

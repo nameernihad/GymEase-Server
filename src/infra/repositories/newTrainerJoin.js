@@ -47,10 +47,30 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
     }
   };
 
+  const trainerDetails = async () => {
+    try {
+      const requestedUsers = await newTrianerModel
+        .find()
+        .populate("user")
+        .exec();
+
+      const allTraners = requestedUsers.filter(
+        (user) => user.user.isTrainer === true
+      );
+
+      return allTraners;
+    } catch (error) {
+      // Handle errors here
+      console.error(error);
+      throw error; // You can handle or re-throw the error as needed
+    }
+  };
+
   return {
     newTrainerRequest,
     getAllRequest,
     validation,
+    trainerDetails,
   };
 };
 

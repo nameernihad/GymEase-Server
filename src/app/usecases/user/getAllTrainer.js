@@ -1,5 +1,5 @@
-const allTrainers = (trainerRepo) => async () => {
-  Trainerdetails = await trainerRepo.trainerDetails();
+const allTrainers = (joinTrianerRepo) => async () => {
+  Trainerdetails = await joinTrianerRepo.trainerDetails();
   return Trainerdetails;
 };
 module.exports = {
