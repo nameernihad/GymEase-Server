@@ -1,3 +1,4 @@
+const { addRatings } = require("../../app/usecases/newTrainer/addRating");
 const { allTrainers } = require("../../app/usecases/user/getAllTrainer");
 const { joinTrainer } = require("../../app/usecases/user/joinAsTrainer");
 const {
@@ -177,6 +178,30 @@ const joinAsTrainer = async (req, res) => {
   }
 };
 
+const addRating = async (req, res) => {
+  try {
+    // const userId = req.user._id;
+    const trainerId = req.params.trainerId;
+    const userId = req.params.userId;
+    const rating = req.body.rating;
+
+    const ratings = await addRatings(joinTrianerRepo)(
+      rating,
+      trainerId,
+      userId
+    );
+    console.log(ratings);
+    if (ratings) {
+      res
+        .status(200)
+        .json({ message: "Rating Successfully Submitted", ratings });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   UserRegister,
   UserLogin,
@@ -185,4 +210,5 @@ module.exports = {
   updateUser,
   getTrainers,
   joinAsTrainer,
+  addRating,
 };

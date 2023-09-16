@@ -32,8 +32,8 @@ const AddWorkout = async (req, res) => {
     const createdWorkout = await insertWorkout(workoutRepo)(
       name,
       description,
-      categoryObj._id, // Use the ObjectId reference
-      levelObj._id, // Use the ObjectId reference
+      categoryObj._id,
+      levelObj._id,
       gif,
       count,
       timer

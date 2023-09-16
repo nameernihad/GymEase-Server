@@ -60,9 +60,46 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
 
       return allTraners;
     } catch (error) {
-      // Handle errors here
       console.error(error);
-      throw error; // You can handle or re-throw the error as needed
+      throw error;
+    }
+  };
+
+  const addRatings = async (ratingValue, trainerId, userId) => {
+    try {
+      const trainer = await newTrianerModel.findById(trainerId);
+
+      if (!trainer) {
+        throw new Error("Trainer not found");
+      }
+
+      const existingRating = trainer.ratings.find(
+        (r) => r.user.toString() === userId.toString()
+      );
+
+      if (existingRating) {
+        throw new Error("User has already rated this trainer");
+      }
+
+      const newRating = {
+        user: userId,
+        rating: ratingValue,
+      };
+
+      trainer.ratings.push(newRating);
+
+      const totalRatings = trainer.ratings.length;
+      const sumRatings = trainer.ratings.reduce(
+        (total, r) => total + r.rating,
+        0
+      );
+      trainer.avgRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
+
+      await trainer.save();
+      return trainer;
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   };
 
@@ -71,6 +108,7 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
     getAllRequest,
     validation,
     trainerDetails,
+    addRatings,
   };
 };
 

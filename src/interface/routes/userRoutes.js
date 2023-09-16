@@ -15,11 +15,12 @@ router.post(
 );
 router.post("/sentMail/", sentEmail.sentEmial);
 
+router.get("/singView", userAuthToken, userController.singleView);
+router.get("/getAllTrainer", userAuthToken, userController.getTrainers);
+
 router.put("/updateUser/:userId", userAuthToken, userController.updateUser);
 
 router.patch("/resetPass/:userId", userAuthToken, sentEmail.PasswordReset);
-
-router.get("/singView", userAuthToken, userController.singleView);
-router.get("/getAllTrainer", userAuthToken, userController.getTrainers);
+router.patch("/addRating/:trainerId/:userId", userController.addRating);
 
 module.exports = router;

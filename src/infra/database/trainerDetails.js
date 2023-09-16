@@ -54,8 +54,21 @@ const trainerSchema = new mongoose.Schema({
     type: String,
     enum: ["male", "female", "other"],
   },
+  ratings: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      rating: Number,
+    },
+  ],
+  avgRating: {
+    type: Number,
+    default: 0,
+  },
 });
 
-const joinTrainerModal = mongoose.model("TrainerDetails", trainerSchema);
+const Trainer = mongoose.model("TrainerDetails", trainerSchema);
 
-module.exports = joinTrainerModal;
+module.exports = Trainer;
