@@ -2,6 +2,7 @@ const express = require("express");
 const userController = require("../controller/userController");
 const sentEmail = require("../controller/sentEmail");
 const { userAuthToken } = require("../middleware/authToken");
+const { createSubscription } = require("../controller/paymentController");
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.post(
   userController.userLoginWithGoogle
 );
 router.post("/sentMail/", sentEmail.sentEmial);
+router.post("/create-subscription", createSubscription);
 
 router.get("/singView", userAuthToken, userController.singleView);
 router.get("/getAllTrainer", userAuthToken, userController.getTrainers);
