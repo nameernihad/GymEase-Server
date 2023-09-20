@@ -103,12 +103,30 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
     }
   };
 
+  const getTrainerId = async (trainerId) => {
+    try {
+      const trainer = await newTrianerModel
+        .findById(trainerId)
+        .populate("user")
+        .exec();
+      if (!trainer) {
+        throw new Error("Trainer not found");
+      } else {
+        return trainer;
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     newTrainerRequest,
     getAllRequest,
     validation,
     trainerDetails,
     addRatings,
+    getTrainerId,
   };
 };
 

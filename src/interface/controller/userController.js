@@ -1,4 +1,8 @@
 const { addRatings } = require("../../app/usecases/newTrainer/addRating");
+const { getTrainer } = require("../../app/usecases/newTrainer/trainerById");
+const {
+  Subscription,
+} = require("../../app/usecases/subscriptions/subscriptionUseCase");
 const { allTrainers } = require("../../app/usecases/user/getAllTrainer");
 const { joinTrainer } = require("../../app/usecases/user/joinAsTrainer");
 const {
@@ -12,20 +16,29 @@ const {
   validateSignupData,
   validateLoginData,
 } = require("../../domain/entities/userValidation");
+const { subscriptionModel } = require("../../infra/database/subscriptionModel");
 const joinTrainerModal = require("../../infra/database/trainerDetails");
 const { UserModel } = require("../../infra/database/userModel");
+
 const {
   joinTrainerRepoimpl,
 } = require("../../infra/repositories/newTrainerJoin");
+const {
+  subscriptionRepoimpl,
+} = require("../../infra/repositories/subscriptionRepo");
 const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
 const { generateToken } = require("../middleware/authToken");
 
 const db = UserModel;
 const trainerDb = joinTrainerModal;
+const subscripriptionDb = subscriptionModel;
+
 const userRepository = UserRepoImpl(db);
 const trainerRepo = trainerRepoimpl(db);
 const joinTrianerRepo = joinTrainerRepoimpl(trainerDb);
+
+const subscriptionRepo = subscriptionRepoimpl(subscripriptionDb);
 
 const UserRegister = async (req, res) => {
   try {
@@ -195,10 +208,56 @@ const addRating = async (req, res) => {
       res
         .status(200)
         .json({ message: "Rating Successfully Submitted", ratings });
+      S;
     }
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
+  }
+};
+
+const getTrainerById = async (req, res) => {
+  try {
+    const trainerId = req.params.Id;
+    const trainer = await getTrainer(joinTrianerRepo)(trainerId);
+    if (trainer) {
+      res
+        .status(200)
+        .json({ message: "trianer successfully fetched", trainer });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const subscriptionController = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const trainerId = req.params.trainerId;
+    const { duration, amount } = req.body;
+    const subData = {
+      user: userId,
+      trainer: trainerId,
+      duration,
+      amount,
+    };
+
+    const createdSubscription = await Subscription(subscriptionRepo)(subData);
+
+    return res.status(201).json({
+      success: true,
+      message: "Subscription created successfully",
+      data: createdSubscription,
+    });
+  } catch (error) {
+    // Handle errors (e.g., send an error response to the client)
+    console.error("Error creating subscription:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
@@ -211,4 +270,6 @@ module.exports = {
   getTrainers,
   joinAsTrainer,
   addRating,
+  getTrainerById,
+  subscriptionController,
 };

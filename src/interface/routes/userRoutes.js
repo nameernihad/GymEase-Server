@@ -2,7 +2,6 @@ const express = require("express");
 const userController = require("../controller/userController");
 const sentEmail = require("../controller/sentEmail");
 const { userAuthToken } = require("../middleware/authToken");
-const { createSubscription } = require("../controller/paymentController");
 
 const router = express.Router();
 
@@ -15,14 +14,23 @@ router.post(
   userController.userLoginWithGoogle
 );
 router.post("/sentMail/", sentEmail.sentEmial);
-router.post("/create-subscription", createSubscription);
+router.post(
+  "/subscription/:trainerId",
+  userAuthToken,
+  userController.subscriptionController
+);
 
 router.get("/singView", userAuthToken, userController.singleView);
 router.get("/getAllTrainer", userAuthToken, userController.getTrainers);
+router.get("/getTrainerById/:Id", userController.getTrainerById);
 
 router.put("/updateUser/:userId", userAuthToken, userController.updateUser);
 
 router.patch("/resetPass/:userId", userAuthToken, sentEmail.PasswordReset);
-router.patch("/addRating/:trainerId/:userId", userController.addRating);
+router.patch(
+  "/addRating/:trainerId/:userId",
+  userAuthToken,
+  userController.addRating
+);
 
 module.exports = router;
