@@ -5,6 +5,15 @@ const getTrainer = (joinTrainerRepo) => async (trainerId) => {
     singleTrainer,
   };
 };
+const getTrainerId = (joinTrainerRepo) => async (trainerId) => {
+  const trainerDetailsById = await joinTrainerRepo.getTrainerDetailsById(
+    trainerId
+  );
+  return {
+    trainerDetailsById,
+  };
+};
 module.exports = {
   getTrainer,
+  getTrainerId,
 };

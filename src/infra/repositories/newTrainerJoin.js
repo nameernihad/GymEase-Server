@@ -105,10 +105,30 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
 
   const getTrainerId = async (trainerId) => {
     try {
+      console.log(trainerId);
       const trainer = await newTrianerModel
         .findById(trainerId)
         .populate("user")
         .exec();
+      if (!trainer) {
+        throw new Error("Trainer not found");
+      } else {
+        return trainer;
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const getTrainerDetailsById = async (trainerId) => {
+    try {
+      console.log(trainerId);
+      const trainer = await newTrianerModel
+        .findOne({ user: trainerId })
+        .populate("user")
+        .exec();
+
       if (!trainer) {
         throw new Error("Trainer not found");
       } else {
@@ -127,6 +147,7 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
     trainerDetails,
     addRatings,
     getTrainerId,
+    getTrainerDetailsById,
   };
 };
 
