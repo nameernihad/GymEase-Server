@@ -45,8 +45,21 @@ const subscriptionRepoimpl = (subscriptionModel) => {
     }
   };
 
+  const findSubscription = async (trianerId) => {
+    try {
+      const subscriptions = await subscriptionModel
+        .find({ trainer: trianerId })
+        .populate("user")
+        .populate("trainer");
+      return subscriptions;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return {
     createSubscription,
+    findSubscription,
   };
 };
 

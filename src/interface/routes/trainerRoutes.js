@@ -1,10 +1,17 @@
 const express = require("express");
-const { Login, getTrainerById } = require("../controller/trainerController");
+const {
+  Login,
+  getTrainerById,
+  getSubscription,
+  sentEmails,
+} = require("../controller/trainerController");
 const { trainerAuthToken } = require("../middleware/authToken");
 
 const trainerRoutes = express.Router();
 
 trainerRoutes.post("/", Login);
 trainerRoutes.get("/getTrainer", trainerAuthToken, getTrainerById);
+trainerRoutes.get("/getSubscription", trainerAuthToken, getSubscription);
+trainerRoutes.get("/sentEmail", sentEmails);
 
 module.exports = trainerRoutes;
