@@ -193,28 +193,22 @@ const joinAsTrainer = async (req, res) => {
 
 const addRating = async (req, res) => {
   try {
-    // const userId = req.user._id;
     const trainerId = req.params.trainerId;
-    const userId = req.params.userId;
-    const rating = req.body.rating;
+    const userId = req.user._id;
+    const { rating, comment } = req.body; // Destructure rating and comment from req.body
 
-    const ratings = await addRatings(joinTrianerRepo)(
-      rating,
-      trainerId,
-      userId
-    );
+    // Assuming addRatings function takes both rating and comment as arguments
+    const ratings = await addRatings(joinTrianerRepo)(rating, comment, trainerId, userId);
     console.log(ratings);
     if (ratings) {
-      res
-        .status(200)
-        .json({ message: "Rating Successfully Submitted", ratings });
-      S;
+      res.status(200).json({ message: "Rating Successfully Submitted", ratings });
     }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 const getTrainerById = async (req, res) => {
   try {

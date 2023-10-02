@@ -28,7 +28,7 @@ router.put("/updateUser/:userId", userAuthToken, userController.updateUser);
 
 router.patch("/resetPass/:userId", userAuthToken, sentEmail.PasswordReset);
 router.patch(
-  "/addRating/:trainerId/:userId",
+  "/addRating/:trainerId",
   userAuthToken,
   userController.addRating
 );

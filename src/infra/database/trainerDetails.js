@@ -54,6 +54,15 @@ const trainerSchema = new mongoose.Schema({
     type: String,
     enum: ["male", "female", "other"],
   },
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      commentText: String, // You can adjust the field name and type as needed
+    },
+  ],
   ratings: [
     {
       user: {

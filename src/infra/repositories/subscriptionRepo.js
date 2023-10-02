@@ -45,13 +45,23 @@ const subscriptionRepoimpl = (subscriptionModel) => {
     }
   };
 
-  const findSubscription = async (trianerId) => {
+  const findSubscription = async (trainerId) => {
     try {
+      // Find all subscriptions and populate "user" and "trainer" fields
       const subscriptions = await subscriptionModel
-        .find({ trainer: trianerId })
+        .find()
         .populate("user")
-        .populate("trainer");
-      return subscriptions;
+        .populate("trainer")
+        .exec();
+
+      // Filter the subscriptions based on the condition
+      const filteredSubscriptions = subscriptions.filter((subscription) => {
+        return (
+          subscription.trainer.user._id.toString() === trainerId.toString()
+        );
+      });
+
+      return filteredSubscriptions;
     } catch (error) {
       throw error;
     }

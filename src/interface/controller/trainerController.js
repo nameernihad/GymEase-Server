@@ -84,11 +84,14 @@ const getSubscription = async (req, res) => {
 
 const sentEmails = async (req, res) => {
   try {
-    const { emails, roomCode } = req.body; // Assume emails is an array of email addresses and roomCode is the video call room code
+    console.log("kjhjhdkjd");
+    const { userEmails, roomCode } = req.body;
+    console.log(roomCode, "kjhkjsdhfkjh");
     const emailPromises = [];
 
-    for (const email of emails) {
+    for (const email of userEmails) {
       const userData = await userRepository.findByemail(email);
+      console.log(userData);
       const emailOptions = {
         to: userData.email,
         subject: "Video Call Room Code",
@@ -96,7 +99,7 @@ const sentEmails = async (req, res) => {
           <p>Hello, ${userData.name}</p>
           <p>Your video call room code is: ${roomCode}</p>
           <p>Please click the link below to join the call:</p>
-          <a href="http://your-video-call-url/${roomCode}">Join Video Call</a>
+          <a href="http://localHost:3000/live-setion">Join Video Call</a>
         `,
       };
 

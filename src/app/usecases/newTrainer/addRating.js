@@ -1,5 +1,5 @@
-const addRatings = (joinTrainerRepo) => async (rating, trainerId, userId) => {
-  const addRating = await joinTrainerRepo.addRatings(rating, trainerId, userId);
+const addRatings = (joinTrainerRepo) => async (rating,comment, trainerId, userId) => {
+  const addRating = await joinTrainerRepo.addRatings(rating,comment, trainerId, userId);
 
   return {
     addRating,

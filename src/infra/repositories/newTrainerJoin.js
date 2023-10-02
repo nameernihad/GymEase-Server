@@ -65,7 +65,7 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
     }
   };
 
-  const addRatings = async (ratingValue, trainerId, userId) => {
+  const addRatings = async (ratingValue,commentValue, trainerId, userId) => {
     try {
       const trainer = await newTrianerModel.findById(trainerId);
 
@@ -85,7 +85,12 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
         user: userId,
         rating: ratingValue,
       };
-
+      const newComment = {
+        user:userId,
+        commentText:commentValue
+      }
+      
+      trainer.comments.push(newComment)
       trainer.ratings.push(newRating);
 
       const totalRatings = trainer.ratings.length;

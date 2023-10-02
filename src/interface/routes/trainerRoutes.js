@@ -12,6 +12,6 @@ const trainerRoutes = express.Router();
 trainerRoutes.post("/", Login);
 trainerRoutes.get("/getTrainer", trainerAuthToken, getTrainerById);
 trainerRoutes.get("/getSubscription", trainerAuthToken, getSubscription);
-trainerRoutes.get("/sentEmail", sentEmails);
+trainerRoutes.post("/sentEmail", sentEmails);
 
 module.exports = trainerRoutes;
