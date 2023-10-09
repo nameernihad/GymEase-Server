@@ -1,3 +1,4 @@
+const { getLevelList } = require("../../app/usecases/level/getLevel");
 const { addRatings } = require("../../app/usecases/newTrainer/addRating");
 const { getTrainer } = require("../../app/usecases/newTrainer/trainerById");
 const {
@@ -93,6 +94,7 @@ const UserLogin = async (req, res) => {
 };
 const userLoginWithGoogle = async (req, res) => {
   try {
+    console.log(req.body);
     const { email, name, picture } = req.body;
 
     const token = await loginWithGoogle(userRepository)(email, name, picture);
@@ -100,6 +102,7 @@ const userLoginWithGoogle = async (req, res) => {
       res.status(200).json({ message: "login Successful", token });
     }
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -254,6 +257,8 @@ const subscriptionController = async (req, res) => {
     });
   }
 };
+
+
 
 module.exports = {
   UserRegister,

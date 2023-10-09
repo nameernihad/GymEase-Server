@@ -10,7 +10,7 @@ const verifyToken = (authHeader, expectedSecretKey, req, res, next) => {
     if (!authHeader || !expectedSecretKey) {
       return res
         .status(401)
-        .json({ success: false, message: "Not authenticated!", Auth: false });
+        .json({ success: false, message: "Not authenticated", Auth: false });
     }
 
     const token = authHeader.split(" ")[1];
@@ -18,7 +18,7 @@ const verifyToken = (authHeader, expectedSecretKey, req, res, next) => {
     jwt.verify(token, expectedSecretKey, (err, decoded) => {
       if (err) {
         console.log(err.message);
-        return res.status(403).json({ error: "Invalid token" });
+        return res.status(403).json({ message: "Invalid token" });
       }
       if (decoded) {
         req.user = decoded;
@@ -29,18 +29,20 @@ const verifyToken = (authHeader, expectedSecretKey, req, res, next) => {
     console.log(error.message);
     res.status(401).json({
       success: false,
-      message: "Not authenticated catch !",
+      message: "Not authenticated",
       Auth: false,
     });
   }
 };
 
 const userAuthToken = (req, res, next) => {
+  console.log(req.headers.client);
   const authHeader = req.headers.client;
   verifyToken(authHeader, userSecretKey, req, res, next);
 };
 
 const adminAuthToken = (req, res, next) => {
+  console.log(req.headers.admin);
   const authHeader = req.headers.admin;
   verifyToken(authHeader, adminSecretKey, req, res, next);
 };

@@ -23,7 +23,7 @@ const AddWorkout = async (req, res) => {
     const levelObj = await levelModel.findOne({ name: level });
 
     if (!categoryObj || !levelObj) {
-      // Handle the case where the category or level doesn't exist
+      console.log("dniubdsdf");
       return res
         .status(400)
         .json({ message: "Invalid category or level name" });
@@ -44,9 +44,11 @@ const AddWorkout = async (req, res) => {
         .status(201)
         .json({ message: "Workout successfully added", createdWorkout });
     } else {
+      console.log("errrrrrrrrror");
       res.status(400).json({ message: "Something went wrong" });
     }
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };

@@ -51,19 +51,20 @@ adminRoutes.get("/getAllTrainer", adminAuthToken, TrainerlistController);
 adminRoutes.get("/getAllWorkouts", adminAuthToken, WorkoutlistController);
 adminRoutes.get("/getAllLevel", adminAuthToken, levelList);
 adminRoutes.get("/getAllCategory", adminAuthToken, Categorylist);
-adminRoutes.get(
-  "/getCategoryById/:categoryId",
-  adminAuthToken,
-  getCategoryById
-);
 adminRoutes.get("/getLevelById/:levelId", adminAuthToken, getLevelById);
 adminRoutes.get("/showUser", adminAuthToken, UserSingleView);
-adminRoutes.get("/trainerRequest", trainerRequest);
+adminRoutes.get("/trainerRequest",adminAuthToken, trainerRequest);
 adminRoutes.get(
   "/filteredWorkout/:levelId/:categoryId",
   adminAuthToken,
   filterWorkout
 );
+adminRoutes.get(
+  "/getCategoryById/:categoryId",
+  adminAuthToken,
+  getCategoryById
+);
+
 
 adminRoutes.put("/blockuser/:userId", adminAuthToken, UserBlocking);
 adminRoutes.put("/blocktrainer/:userId", adminAuthToken, UserBlocking);
