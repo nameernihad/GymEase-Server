@@ -7,6 +7,7 @@ const {
   UserSingleView,
   trainerRequest,
   requestValidtion,
+  totalPayments,
 } = require("../controller/adminController");
 
 const {
@@ -54,6 +55,7 @@ adminRoutes.get("/getAllCategory", adminAuthToken, Categorylist);
 adminRoutes.get("/getLevelById/:levelId", adminAuthToken, getLevelById);
 adminRoutes.get("/showUser", adminAuthToken, UserSingleView);
 adminRoutes.get("/trainerRequest",adminAuthToken, trainerRequest);
+adminRoutes.get("/totalPayments",adminAuthToken, totalPayments);
 adminRoutes.get(
   "/filteredWorkout/:levelId/:categoryId",
   adminAuthToken,

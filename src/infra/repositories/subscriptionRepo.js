@@ -67,9 +67,22 @@ const subscriptionRepoimpl = (subscriptionModel) => {
     }
   };
 
+  const totalPayment =  async () => {
+    try {
+    const data = await subscriptionModel.find();
+
+    const totalSum = data.reduce((acc, item) => acc + item.amount, 0);
+
+    return totalSum 
+    } catch (error) {
+      throw error;
+    }
+  }
+
   return {
     createSubscription,
     findSubscription,
+    totalPayment
   };
 };
 

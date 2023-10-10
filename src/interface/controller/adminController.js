@@ -25,15 +25,20 @@ const {
   validation,
 } = require("../../app/usecases/newTrainer/trainerValidation");
 const { sendMail } = require("../../services/sentMail");
+const { subscriptionModel } = require("../../infra/database/subscriptionModel");
+const { subscriptionRepoimpl } = require("../../infra/repositories/subscriptionRepo");
+const { totalPayment } = require("../../app/usecases/admin/totalPayment");
 
 const db = UserModel;
 const workoutdb = workoutModel;
 const trainerDb = joinTrainerModal;
+const subDb = subscriptionModel;
 
 const adminRepo = adminRepoimpl(db);
 const userRepo = UserRepoImpl(db);
 const trainerRepo = trainerRepoimpl(db);
 const joinTrianerRepo = joinTrainerRepoimpl(trainerDb);
+const subscriptionRepo = subscriptionRepoimpl(subDb);
 
 const Login = async (req, res) => {
   try {
@@ -164,6 +169,19 @@ const requestValidtion = async (req, res) => {
   }
 };
 
+const totalPayments = async(req,res)=>{
+  try {
+    console.log("hi");
+    const totalAmount = await totalPayment(subscriptionRepo)({})
+    if(totalAmount){
+      res.status(200).json({message:"Total amount gotten Successfully",totalAmount})
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   Login,
   UserListController,
@@ -172,4 +190,5 @@ module.exports = {
   UserSingleView,
   trainerRequest,
   requestValidtion,
+  totalPayments
 };
