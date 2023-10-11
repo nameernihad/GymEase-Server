@@ -37,11 +37,11 @@ const Login = async (req, res) => {
       const token = generateToken(trainer, process.env.TRAINER_SECRET_KEY);
       res.status(200).json({ message: "login Successful", trainer, token });
     } else {
-      res.status(401).json({ message: "you are not an trainer" });
+      res.status(401).json({ message: "you are not a trainer" });
     }
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
