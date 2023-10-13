@@ -77,17 +77,13 @@ const UserLogin = async (req, res) => {
     const validationErrors = validateLoginData(req.body);
 
     const user = await loginUser(userRepository)(email, password);
-    console.log(user,"jhgfdfghjkl;;;;");
     if (user) {
-      console.log(user,"ffffffffffffff");
       const token = generateToken(user, process.env.USER_SECRET_KEY);
-      console.log(token);
       res.status(200).json({ message: "Login Successful", user, token });
     } else {
-      res.status(401).json({ message: "Invalid email or password bbbbbbbbbbbbbbbb" });
+      res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
-    console.log(error.message);
     res
       .status(error.statusCode || 500)
       .json({ message: error.message || "Something went wrong" });
