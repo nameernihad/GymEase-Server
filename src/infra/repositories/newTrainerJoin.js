@@ -53,17 +53,16 @@ const joinTrainerRepoimpl = (newTrianerModel) => {
         .find()
         .populate("user")
         .exec();
-
-      const allTraners = requestedUsers.filter(
-        (user) => user.user.isTrainer === true
-      );
-
-      return allTraners;
+  
+      const allTrainers = requestedUsers.filter((user) => user.user && user.user.isTrainer === true);
+  
+      return allTrainers;
     } catch (error) {
       console.error(error);
       throw error;
     }
   };
+  
 
   const addRatings = async (ratingValue,commentValue, trainerId, userId) => {
     try {
