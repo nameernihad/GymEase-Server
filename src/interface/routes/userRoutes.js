@@ -7,6 +7,7 @@ const { Categorylist } = require("../controller/categoryController");
 const { filterWorkout } = require("../controller/workoutController");
 const { checkUserStatusByEmail } = require("../middleware/checkUserStatusByEmail");
 const { checkUserStatusByUserId } = require("../middleware/checkUserStatusById");
+const fileUploadController = require("../controller/fileUploadController");
 
 const router = express.Router();
 
@@ -23,6 +24,11 @@ router.post(
   userAuthToken,checkUserStatusByUserId,
   userController.subscriptionController
 );
+router.post("/uploadImage", (req, res) => {
+  fileUploadController(req.body.image)
+    .then((url) => res.send(url))
+    .catch((err) => res.status(500).send(err));
+});
 
 router.get("/singView",  userAuthToken,checkUserStatusByUserId, userController.singleView);
 router.get("/getAllTrainer",  userAuthToken,checkUserStatusByUserId, userController.getTrainers);
