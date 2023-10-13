@@ -82,6 +82,6 @@ adminRoutes.delete(
   categoryDelete
 );
 
-adminRoutes.patch("/requestValidtion/:id", adminAuthToken, requestValidtion);
+adminRoutes.patch("/requestValidation/:id", adminAuthToken, requestValidtion);
 
 module.exports = adminRoutes;

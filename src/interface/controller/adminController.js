@@ -124,6 +124,7 @@ const trainerRequest = async (req, res) => {
 
 const requestValidtion = async (req, res) => {
   try {
+    console.log("req validation");
     const id = req.params.id;
     const { status } = req.body;
     validaionDetails = {
