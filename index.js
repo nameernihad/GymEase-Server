@@ -13,7 +13,11 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+// Enable CORS for requests from 'https://gymease.vercel.app'
+app.use(cors({
+  origin: 'https://gymease.vercel.app',
+}));
+
 app.use(morgan("dev"));
 
 app.use(bodyParser.json({ limit: "10mb" }));
