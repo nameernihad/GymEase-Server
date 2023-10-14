@@ -152,7 +152,7 @@ const requestValidtion = async (req, res) => {
   
           ${
             validated.validate.status === "approve"
-              ? '<a href="http://localhost:3000/trainer/login">Login as Trainer</a>'
+              ? '<a href="https://gymease.vercel.app/trainer/login">Login as Trainer</a>'
               : ""
           }
         `,
