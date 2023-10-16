@@ -13,10 +13,10 @@ require("dotenv").config();
 
 const app = express();
 
-// Enable CORS for requests from 'https://gymease.vercel.app'
 app.use(cors({
-  origin: 'https://gymease.vercel.app',
+  origin: ['http://localhost:3000', 'https://gymease.vercel.app'],
 }));
+
 
 app.use(morgan("dev"));
 

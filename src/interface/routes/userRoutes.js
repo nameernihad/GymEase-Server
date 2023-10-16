@@ -35,7 +35,6 @@ router.get("/getAllTrainer",  userAuthToken,checkUserStatusByUserId, userControl
 router.get("/getTrainerById/:Id",  userController.getTrainerById);
 router.get("/getAllLevel",  userAuthToken,checkUserStatusByUserId, levelList);
 router.get("/getAllCategory",  userAuthToken,checkUserStatusByUserId, Categorylist);
-router.put("/updateUser/:userId",  userAuthToken,checkUserStatusByUserId, userController.updateUser);
 router.get(
   "/filteredWorkout/:levelId/:categoryId", 
   userAuthToken,checkUserStatusByUserId,
@@ -48,5 +47,6 @@ router.patch(
   userAuthToken,checkUserStatusByUserId,
   userController.addRating
 );
+router.put("/updateUser",  userAuthToken,checkUserStatusByUserId, userController.updateUser);
 
 module.exports = router;

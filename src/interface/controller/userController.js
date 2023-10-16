@@ -120,7 +120,7 @@ const singleView = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userDetails = req.body;
-    const userId = req.params;
+    const userId = req.user._id;
     console.log(userDetails, userId);
     const updatedUser = await userUpdate(userRepository)(userId, userDetails);
 

@@ -84,9 +84,8 @@ const getSubscription = async (req, res) => {
 
 const sentEmails = async (req, res) => {
   try {
-    console.log("kjhjhdkjd");
     const { userEmails, roomCode } = req.body;
-    console.log(roomCode, "kjhkjsdhfkjh");
+    console.log(roomCode);
     const emailPromises = [];
 
     for (const email of userEmails) {
@@ -99,7 +98,7 @@ const sentEmails = async (req, res) => {
           <p>Hello, ${userData.name}</p>
           <p>Your video call room code is: ${roomCode}</p>
           <p>Please click the link below to join the call:</p>
-          <a href="http://localHost:3000/live-setion">Join Video Call</a>
+          <a href="https://gymease.vercel.app/live-setion">Join Video Call</a>
         `,
       };
 
