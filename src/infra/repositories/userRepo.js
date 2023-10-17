@@ -96,6 +96,8 @@ const UserRepoImpl = (userModel) => {
         },
         { new: true }
       );
+        return updatedData
+
     } catch (error) {
       return error.message;
     }
