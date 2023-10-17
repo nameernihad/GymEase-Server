@@ -47,7 +47,7 @@ router.patch(
   userAuthToken,checkUserStatusByUserId,
   userController.addRating
 );
-router.post("/userUpdate",  userAuthToken,checkUserStatusByUserId, userController.updateUser);
+router.put("/userUpdate",  userAuthToken,checkUserStatusByUserId, userController.updateUser);
 
 
 module.exports = router;
