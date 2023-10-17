@@ -101,6 +101,27 @@ const UserRepoImpl = (userModel) => {
     }
   };
 
+
+  const calculatingBMI = async (userId) => {
+    try {
+      const user = await userModel.findOne({ _id: userId });
+  
+      if (!user) {
+        return null;
+      }
+      
+      const heightInMeters = user.height / 100; 
+      const weight = user.weight;
+      const BMI = weight / (heightInMeters * heightInMeters);
+  
+      return BMI;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+  
+
   return {
     Create,
     findByemail,
@@ -110,6 +131,7 @@ const UserRepoImpl = (userModel) => {
     BlockingUser,
     PasswordReset,
     UpdatedUser,
+    calculatingBMI
   };
 };
 

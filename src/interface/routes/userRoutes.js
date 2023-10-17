@@ -40,6 +40,7 @@ router.get(
   userAuthToken,checkUserStatusByUserId,
   filterWorkout
 );
+router.get('/calculateBMI',userController.calculateBMI)
 
 router.patch("/resetPass/:userId",  userAuthToken,checkUserStatusByUserId, sentEmail.PasswordReset);
 router.patch(
@@ -47,6 +48,7 @@ router.patch(
   userAuthToken,checkUserStatusByUserId,
   userController.addRating
 );
+
 router.put("/userUpdate",  userAuthToken,checkUserStatusByUserId, userController.updateUser);
 
 

@@ -4,6 +4,7 @@ const { getTrainer } = require("../../app/usecases/newTrainer/trainerById");
 const {
   Subscription,
 } = require("../../app/usecases/subscriptions/subscriptionUseCase");
+const { BMIcalculate } = require("../../app/usecases/user/calculateBmi");
 const { allTrainers } = require("../../app/usecases/user/getAllTrainer");
 const { joinTrainer } = require("../../app/usecases/user/joinAsTrainer");
 const {
@@ -255,6 +256,32 @@ const subscriptionController = async (req, res) => {
   }
 };
 
+const calculateBMI = async (req, res) => {
+  try {
+    // const userId = req.user._id;
+    const userId = "6529099ea7d2768ff9d8a559";
+
+    const BMI = await BMIcalculate(userRepository)(userId);
+
+    if (BMI !== null) {
+      res.status(200).json({
+        message: "BMI calculation successful",
+        BMI: BMI,
+      });
+    } else {
+      res.status(404).json({
+        message: "User not found or BMI data not available",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+
 
 
 module.exports = {
@@ -268,4 +295,5 @@ module.exports = {
   addRating,
   getTrainerById,
   subscriptionController,
+  calculateBMI,
 };
