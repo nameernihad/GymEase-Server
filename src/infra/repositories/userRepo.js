@@ -109,7 +109,7 @@ const UserRepoImpl = (userModel) => {
       if (!user) {
         return null;
       }
-      
+
       const heightInMeters = user.height / 100; 
       const weight = user.weight;
       const BMI = weight / (heightInMeters * heightInMeters);
