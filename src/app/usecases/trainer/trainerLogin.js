@@ -10,6 +10,13 @@ const trainerLogin = (trainerRepo) => async (email, password) => {
   }
   return null;
 };
+const trainerUpdate =  (trainerRepo)=> async (trainerData,trainerId)=>{
+  const updatedTrainer = await trainerRepo.updateTrainer(trainerData,trainerId)
+  if(updatedTrainer){
+    return updatedTrainer
+  }
+}
 module.exports = {
   trainerLogin,
+  trainerUpdate
 };

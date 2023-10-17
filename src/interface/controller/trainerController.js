@@ -2,7 +2,7 @@ const { validateLoginData } = require("../../domain/entities/userValidation");
 const { UserModel } = require("../../infra/database/userModel");
 const joinTrainerModal = require("../../infra/database/trainerDetails");
 const { trainerRepoimpl } = require("../../infra/repositories/trainerRepo");
-const { trainerLogin } = require("../../app/usecases/trainer/trainerLogin");
+const { trainerLogin, trainerUpdate } = require("../../app/usecases/trainer/trainerLogin");
 const { generateToken } = require("../middleware/authToken");
 const {
   joinTrainerRepoimpl,
@@ -115,10 +115,41 @@ const sentEmails = async (req, res) => {
     res.status(500).json({ message: "Error sending emails" });
   }
 };
+const trainerEditProfile = async (req, res) => {
+  try {
+    const trainerId = req.user._id;
+    const updatedData = {
+      about,
+      experience,
+      certifications,
+      experienceDetails,
+      profilePhoto,
+      coverPhoto,
+      paymentDetails,
+      gender,
+    } = req.body;
+
+    const updatedTrainer = await trainerUpdate(trainerDetails)(updatedData, trainerId);
+
+    if (updatedTrainer) {
+      res.status(200).json({
+        message: "Trainer profile successfully updated",
+        updatedTrainer,
+      });
+    } else {
+      res.status(404).json({ message: "Trainer not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 
 module.exports = {
   Login,
   getTrainerById,
   getSubscription,
   sentEmails,
+  trainerEditProfile
 };

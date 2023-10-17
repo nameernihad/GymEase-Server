@@ -9,9 +9,27 @@ const trainerRepoimpl = (userModel) => {
     return allTraners;
   };
 
+  const updateTrainer = async (trainerData,trainerId) =>{
+    try {
+      const updatedTrainer = await userModel.findByIdAndUpdate(
+        trainerId, 
+        trainerData, 
+        { new: true } 
+      );
+      if (!updatedTrainer) {
+        return null;
+      }
+      return updatedTrainer;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   return {
     trainerfind,
     trainerDetails,
+    updateTrainer,
   };
 };
 
