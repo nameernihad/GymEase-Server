@@ -14,15 +14,18 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: ['https://gymease.vercel.app', 'http://localhost:3000'],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Authorization",
+  origin: ['https://gymease.vercel.app','http://localhost:3000'],
 }));
+
 
 app.use(morgan("dev"));
 
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+
+app.use("/", router);
+app.use("/admin", adminRoutes);
+app.use("/trainer", trainerRoutes);
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -40,10 +43,6 @@ mongoose.connection.on("error", (err) => {
 app.get("/", (req, res) => {
   res.send("Hello from the server!");
 });
-
-app.use("/", router);
-app.use("/admin", adminRoutes);
-app.use("/trainer", trainerRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
