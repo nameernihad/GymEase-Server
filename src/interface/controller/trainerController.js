@@ -66,6 +66,7 @@ const getTrainerById = async (req, res) => {
 
 const getSubscription = async (req, res) => {
   try {
+    console.log("haaaai")
     const trianerId = req.user._id;
     console.log(trianerId);
     const subscription = await subDetials(subscriptionRepo)(trianerId);
@@ -85,7 +86,7 @@ const getSubscription = async (req, res) => {
 const sentEmails = async (req, res) => {
   try {
     const { userEmails, roomCode } = req.body;
-    console.log(roomCode);
+    console.log(userEmails,roomCode);
     const emailPromises = [];
 
     for (const email of userEmails) {
