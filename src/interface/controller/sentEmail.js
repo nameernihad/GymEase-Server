@@ -36,7 +36,7 @@ const sentEmial = async (req, res) => {
 
 const PasswordReset = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.params.userId;
     const { password } = req.body;
     const updatedData = await setNewPassword(userRepository)(userId, password);
     if (updatedData) {
