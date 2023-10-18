@@ -12,7 +12,7 @@ const { subscriptionModel } = require("../../infra/database/subscriptionModel");
 const {
   subscriptionRepoimpl,
 } = require("../../infra/repositories/subscriptionRepo");
-const { subDetials } = require("../../app/usecases/subscriptions/subDetails");
+const { subDetials, totalAmount, findDurations } = require("../../app/usecases/subscriptions/subDetails");
 const { sendMultyMail } = require("../../services/sentMultyEmail");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
 
@@ -66,7 +66,6 @@ const getTrainerById = async (req, res) => {
 
 const getSubscription = async (req, res) => {
   try {
-    console.log("haaaai")
     const trianerId = req.user._id;
     console.log(trianerId);
     const subscription = await subDetials(subscriptionRepo)(trianerId);
@@ -146,11 +145,48 @@ const trainerEditProfile = async (req, res) => {
   }
 };
 
+const totalSubAmount = async (req,res)=>{
+  try {
+    const trainerId = req.user._id
+
+    const calculatedAmount = await totalAmount(subscriptionRepo)(trainerId) 
+    if (calculatedAmount) {
+      res
+        .status(200)
+        .json({ message: "Successfully fetched total sub Amount", calculatedAmount });
+    } else {
+      res.status(401).json({ message: "something went wrong" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+const durationCount = async (req,res)=>{
+  try {
+    const trainerId = req.user._id
+    const collectedData = await findDurations(subscriptionRepo)(trainerId) 
+    if (collectedData) {
+      res
+        .status(200)
+        .json({ message: "Successfully fetched the  duration count", collectedData });
+    } else {
+      res.status(401).json({ message: "something went wrong" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 
 module.exports = {
   Login,
   getTrainerById,
   getSubscription,
   sentEmails,
-  trainerEditProfile
+  trainerEditProfile,
+  totalSubAmount,
+  durationCount
 };

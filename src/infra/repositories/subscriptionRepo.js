@@ -78,11 +78,83 @@ const subscriptionRepoimpl = (subscriptionModel) => {
       throw error;
     }
   }
+  const calculateSubAmount =  async (trainerId) => {
+    try {
+     const subscriptions = await subscriptionModel
+     .find()
+     .populate("trainer")
+     .exec();
+
+   const filteredSubscriptions = subscriptions.filter((subscription) => {
+     return (
+       subscription.trainer.user._id.toString() === trainerId.toString()
+     );
+   });
+
+   const totalSum = filteredSubscriptions.reduce((acc, item) => acc + item.amount, 0);
+
+   return totalSum 
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const durationCount =  async (trainerId) => {
+    try {
+      const subscriptions = await subscriptionModel
+            .find()
+            .populate("trainer")
+            .exec();
+
+        const filteredSubscriptions = subscriptions.filter((subscription) => {
+            return (
+                subscription.trainer.user._id.toString() === trainerId.toString()
+            );
+        });
+
+        const oneMonthCount = filteredSubscriptions.filter(subscription => subscription.duration === 'oneMonth').length;
+        const sixMonthCount = filteredSubscriptions.filter(subscription => subscription.duration === 'sixMonths').length;
+        const oneYearCount = filteredSubscriptions.filter(subscription => subscription.duration === 'oneYear').length;
+
+        const response = {
+            oneMonth: oneMonthCount,
+            sixMonths: sixMonthCount,
+            oneYear: oneYearCount,
+        };
+
+       return response
+    } catch (error) {
+      throw error;
+
+    }
+  }
+
+  const getAllSubscriptions = async () => {
+    try {
+      const subscriptions = await subscriptionModel
+      .find()
+      .populate("user")
+      .populate({
+          path: "trainer",
+          populate: {
+              path: "user",
+          },
+      })
+      .exec();
+
+      return subscriptions;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   return {
     createSubscription,
     findSubscription,
-    totalPayment
+    totalPayment,
+    calculateSubAmount,
+    durationCount,
+    getAllSubscriptions
   };
 };
 

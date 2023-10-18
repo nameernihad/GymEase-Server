@@ -5,6 +5,8 @@ const {
   getSubscription,
   sentEmails,
   trainerEditProfile,
+  totalSubAmount,
+  durationCount,
 } = require("../controller/trainerController");
 const { trainerAuthToken } = require("../middleware/authToken");
 const { checkUserStatusByUserId } = require("../middleware/checkUserStatusById");
@@ -19,5 +21,7 @@ trainerRoutes.put('/editProfile',trainerAuthToken,checkUserStatusByUserId,traine
 
 trainerRoutes.get("/getTrainer", trainerAuthToken,checkUserStatusByUserId, getTrainerById);
 trainerRoutes.get("/getSubscription", trainerAuthToken,checkUserStatusByUserId, getSubscription);
+trainerRoutes.get("/totalSubAmount", trainerAuthToken,checkUserStatusByUserId, totalSubAmount);
+trainerRoutes.get("/durationCount", trainerAuthToken,checkUserStatusByUserId, durationCount);
 
 module.exports = trainerRoutes;

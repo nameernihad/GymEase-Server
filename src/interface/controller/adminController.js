@@ -28,6 +28,7 @@ const { sendMail } = require("../../services/sentMail");
 const { subscriptionModel } = require("../../infra/database/subscriptionModel");
 const { subscriptionRepoimpl } = require("../../infra/repositories/subscriptionRepo");
 const { totalPayment } = require("../../app/usecases/admin/totalPayment");
+const { allSubscriptions } = require("../../app/usecases/subscriptions/subDetails");
 
 const db = UserModel;
 const workoutdb = workoutModel;
@@ -183,6 +184,17 @@ const totalPayments = async(req,res)=>{
   }
 }
 
+const subscriptionList = async (req,res)=>{
+  try {
+    const subData = await allSubscriptions(subscriptionRepo)({});
+    if (subData) {
+      res.status(200).json({message:"Successfully fetched Subscription data", subData });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   Login,
   UserListController,
@@ -191,5 +203,6 @@ module.exports = {
   UserSingleView,
   trainerRequest,
   requestValidtion,
-  totalPayments
+  totalPayments,
+  subscriptionList
 };
