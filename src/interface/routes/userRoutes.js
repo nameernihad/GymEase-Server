@@ -42,7 +42,7 @@ router.get(
 );
 router.get('/calculateBMI',userAuthToken,checkUserStatusByUserId,userController.calculateBMI)
 
-router.patch("/resetPass/:userId",  userAuthToken,checkUserStatusByUserId, sentEmail.PasswordReset);
+router.patch("/resetPass/:userId",checkUserStatusByUserId, sentEmail.PasswordReset);
 router.patch(
   "/addRating/:trainerId", 
   userAuthToken,checkUserStatusByUserId,
