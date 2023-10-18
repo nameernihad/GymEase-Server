@@ -14,7 +14,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://gymease.vercel.app'],
+  origin: ['https://gymease.vercel.app','http://localhost:3000'],
 }));
 
 
