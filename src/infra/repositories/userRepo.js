@@ -82,7 +82,8 @@ const UserRepoImpl = (userModel) => {
 
   const UpdatedUser = async (userId, userDetails) => {
     console.log(userDetails);
-    const { name, email, phone, gender, height, weight } = userDetails;
+    const { name, email, phone, gender, height, weight,profilePhoto } = userDetails;
+    console.log(profilePhoto)
     try {
       const updatedData = await userModel.findByIdAndUpdate(
         userId,
@@ -93,9 +94,11 @@ const UserRepoImpl = (userModel) => {
           gender,
           height,
           weight,
+          profilePhoto
         },
         { new: true }
       );
+
         return updatedData
 
     } catch (error) {

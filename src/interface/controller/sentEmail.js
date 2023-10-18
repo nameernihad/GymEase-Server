@@ -19,7 +19,7 @@ const sentEmial = async (req, res) => {
       html: `
       <p>Hello,${userData.name}</p>
       <p>Please click the link below to reset your password:</p>
-      <a href="http://localhost:3000/restPass/${userData._id}">Reset Password</a>
+      <a href="https://gymease.vercel.app/restPass/${userData._id}">Reset Password</a>
     `,
     };
     const emailsented = sendMail(emailOptions);
