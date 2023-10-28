@@ -25,6 +25,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "socket.io": "^4.7.2",
     "stripe": "^13.6.0",
-    "tw-elements-react": "^1.0.0-alpha1"
+    "tw-elements-react": "^1.0.0-alpha1",
+    "uuid4": "^2.0.3"
   }
 }

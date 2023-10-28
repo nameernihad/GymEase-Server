@@ -15,6 +15,7 @@ const {
 const { subDetials, totalAmount, findDurations } = require("../../app/usecases/subscriptions/subDetails");
 const { sendMultyMail } = require("../../services/sentMultyEmail");
 const { UserRepoImpl } = require("../../infra/repositories/userRepo");
+const { createToken } = require("../../services/managmentToken");
 
 const db = UserModel;
 const trainerDb = joinTrainerModal;
@@ -180,6 +181,22 @@ const durationCount = async (req,res)=>{
   }
 }
 
+const TokenCreation = async (req,res)=>{
+  try {
+    const token = await createToken()
+    console.log(token)
+    if(token){
+      res.status(201).json({message:"Token Created Successfully",token})
+    }else{
+      res.status(401).json({ message: "something went wrong" });
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: "Internal server error" });
+
+  }
+}
+
 
 module.exports = {
   Login,
@@ -188,5 +205,6 @@ module.exports = {
   sentEmails,
   trainerEditProfile,
   totalSubAmount,
-  durationCount
+  durationCount,
+  TokenCreation
 };

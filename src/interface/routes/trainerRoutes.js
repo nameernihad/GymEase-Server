@@ -7,6 +7,7 @@ const {
   trainerEditProfile,
   totalSubAmount,
   durationCount,
+  TokenCreation,
 } = require("../controller/trainerController");
 const { trainerAuthToken } = require("../middleware/authToken");
 const { checkUserStatusByUserId } = require("../middleware/checkUserStatusById");
@@ -16,7 +17,7 @@ const trainerRoutes = express.Router();
 
 trainerRoutes.post("/",checkTrainerStatusByEmail, Login);
 trainerRoutes.post("/sentEmail", sentEmails);
-
+trainerRoutes.get("/ManagementTokenCreation",trainerAuthToken,checkUserStatusByUserId, TokenCreation);
 trainerRoutes.put('/editProfile',trainerAuthToken,checkUserStatusByUserId,trainerEditProfile)
 
 trainerRoutes.get("/getTrainer", trainerAuthToken,checkUserStatusByUserId, getTrainerById);
