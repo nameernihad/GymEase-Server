@@ -6,16 +6,18 @@ const UserRepoImpl = (userModel) => {
       const existingUser = await userModel.findOne({ email: user.email });
   
       if (existingUser) {
-        throw new Error('User already exists');
+        throw new AppError('User already exists', 409);
       } else {
         const createdUser = await userModel.create(user);
         return createdUser.toObject();
       }
     } catch (error) {
       console.log(error.message);
-      throw new Error('An error occurred while creating the user');
+  
+      throw new AppError('An error occurred while creating the user', 500); 
     }
   };
+  
   
 
   const findByemail = async (email) => {

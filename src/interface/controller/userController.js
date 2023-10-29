@@ -61,15 +61,18 @@ const UserRegister = async (req, res) => {
     if (!user) {
       return res.status(500).json({ message: "Something went wrong" });
     }
+
     return res.status(201).json({ message: "Signup successful", user });
   } catch (error) {
-    console.log(error.message);
+    console.error(error); 
 
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "Somthing went wrong" });
+    let statusCode = error.statusCode || 500;
+    let errorMessage = error.message || "Something went wrong";
+
+    return res.status(statusCode).json({ message: errorMessage });
   }
 };
+
 
 const UserLogin = async (req, res) => {
   try {
