@@ -19,7 +19,8 @@ const loginWithGoogle = (userRepository) => async (email, name, image) => {
     if (!newUser) {
       return "Something went wrong";
     }
-    const token = generateToken(user,process.env.USER_SECRET_KEY);
+    console.log(newUser)
+    const token = generateToken(newUser,process.env.USER_SECRET_KEY);
 
     return token;
   } else {

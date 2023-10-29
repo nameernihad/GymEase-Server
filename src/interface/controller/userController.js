@@ -76,7 +76,6 @@ const UserRegister = async (req, res) => {
 
 const UserLogin = async (req, res) => {
   try {
-    console.log("hi");
     const { email, password } = req.body;
     const validationErrors = validateLoginData(req.body);
 

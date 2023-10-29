@@ -13,11 +13,18 @@ const UserRepoImpl = (userModel) => {
         return createdUser.toObject();
       }
     } catch (error) {
-      console.log(error.message);
-  
-      throw new AppError('An error occurred while creating the user', 500); 
+      if (error instanceof AppError) {
+        throw error;
+      } else if (error instanceof Error) {
+        console.error(error.message);
+        throw new AppError('An error occurred while creating the user', 500);
+      } else {
+        console.error('Unknown error:', error);
+        throw new AppError('Unknown error occurred', 500);
+      }
     }
   };
+  
   
   
 
