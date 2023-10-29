@@ -50,6 +50,11 @@ router.patch(
 );
 
 router.put("/userUpdate",  userAuthToken,checkUserStatusByUserId, userController.updateUser);
+router.get(
+  "/filteredWorkout/:levelId/:categoryId",
+  userAuthToken,
+  filterWorkout
+);
 
 
 module.exports = router;

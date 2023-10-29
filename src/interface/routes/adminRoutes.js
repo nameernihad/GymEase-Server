@@ -58,11 +58,7 @@ adminRoutes.get("/getLevelById/:levelId", adminAuthToken, getLevelById);
 adminRoutes.get("/showUser", adminAuthToken, UserSingleView);
 adminRoutes.get("/trainerRequest",adminAuthToken, trainerRequest);
 adminRoutes.get("/totalPayments",adminAuthToken, totalPayments);
-adminRoutes.get(
-  "/filteredWorkout/:levelId/:categoryId",
-  adminAuthToken,
-  filterWorkout
-);
+
 adminRoutes.get(
   "/getCategoryById/:categoryId",
   adminAuthToken,
