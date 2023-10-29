@@ -3,7 +3,6 @@ const userRepo = require("../../../infra/repositories/userRepo");
 const bcrypt = require("bcrypt");
 
 const signupUser = (userRepo) => async (name, email, phone, password) => {
-  console.log("usecase:", name, email, phone, password);
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = {
     name,

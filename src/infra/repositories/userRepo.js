@@ -4,10 +4,18 @@ const bcrypt = require("bcrypt");
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
     try {
-      const createdUser = await userModel.create(user);
+      const existingUser = await userModel.findOne({ email: user.email });
+      if (existingUser) {
+        
+        return { error: 'User already exists' };
+      }else{
+        const createdUser = await userModel.create(user);
       return createdUser.toObject();
+      }
+      
     } catch (error) {
       console.log(error.message);
+      return { error: 'An error occurred while creating the user' };
     }
   };
 
