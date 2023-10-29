@@ -4,9 +4,7 @@ const { generateToken } = require("../../../interface/middleware/authToken");
 const loginUser = (userRepository) => async (email, password) => {
   const user = await userRepository.findByemail(email);
   if (user) {
-    console.log(password,"usecase login ");
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log(isPasswordValid);
     if (isPasswordValid) {  
       return user;
     }

@@ -1,23 +1,22 @@
-const { UserModel } = require("../database/userModel");
 const bcrypt = require("bcrypt");
 
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
     try {
       const existingUser = await userModel.findOne({ email: user.email });
+  
       if (existingUser) {
-        
-        return { error: 'User already exists' };
-      }else{
+        throw new Error('User already exists');
+      } else {
         const createdUser = await userModel.create(user);
-      return createdUser.toObject();
+        return createdUser.toObject();
       }
-      
     } catch (error) {
       console.log(error.message);
-      return { error: 'An error occurred while creating the user' };
+      throw new Error('An error occurred while creating the user');
     }
   };
+  
 
   const findByemail = async (email) => {
     const user = await userModel.findOne({
