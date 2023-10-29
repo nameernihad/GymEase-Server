@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const AppError = require("../../utilis/error");
 
 const UserRepoImpl = (userModel) => {
   const Create = async (user) => {
